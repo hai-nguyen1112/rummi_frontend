@@ -9,7 +9,8 @@ class PlayingField extends React.Component {
     this.state = {
       computerCards: [],
       playerCards: [],
-      remainingCards: []
+      remainingCards: [],
+      playerCardGroup: []
     }
   }
 
@@ -46,12 +47,30 @@ class PlayingField extends React.Component {
     })
   }
 
+  handleClickOfCard = card => {
+    let group = this.state.playerCardGroup
+    group.push(card)
+    this.setState({playerCardGroup: group})
+  }
+
+  handleClickOfCheck = () => {
+    let group = this.state.playerCardGroup
+    if (group.every((val, i, arr) => val.color === arr[0].color)) {
+      group.sort((a, b) => a.number - b.number)
+      console.log(group)
+    }
+  }
+
   render() {
     return (
       <div className="ui vertically divided grid">
         <ComputerContainer computerCards={this.state.computerCards}/>
         <CardPool />
-        <PlayerContainer playerCards={this.state.playerCards}/>
+        <PlayerContainer
+          playerCards={this.state.playerCards}
+          onClickOfCard={this.handleClickOfCard}
+          onClickOfCheck={this.handleClickOfCheck}
+        />
       </div>
     )
   }

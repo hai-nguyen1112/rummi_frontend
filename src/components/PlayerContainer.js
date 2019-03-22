@@ -2,10 +2,11 @@ import React from 'react'
 import Card from './Card'
 
 const PlayerContainer = props => {
-  let playerCards = props.playerCards.map(card => <Card key={card.id} card={card}/>)
+  let playerCards = props.playerCards.map(card => <Card key={card.id} card={card} onClickOfCard={props.onClickOfCard}/>)
   return (
     <div className="forteen column row">
-    {playerCards}
+      {playerCards}
+      <button onClick={props.onClickOfCheck}>Check</button>
     </div>
   )
 }
