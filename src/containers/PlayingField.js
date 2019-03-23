@@ -163,7 +163,10 @@ class PlayingField extends React.Component {
           console.log("found no group 1")
           computerDraw1 = true
       }
-    }
+    }  else {
+      console.log("found no group 1")
+      computerDraw1 = true
+  }
     let remainingComputerCards = this.state.computerCards
     let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
     remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
