@@ -2,7 +2,7 @@ import React from 'react'
 import ComputerContainer from '../components/ComputerContainer'
 import PlayerContainer from '../components/PlayerContainer'
 import CommonContainer from '../components/CommonContainer'
-
+import Button from  '../components/Button'
 var _ = require('underscore')
 let computerDraw1 = false
 let computerDraw2 = false
@@ -158,6 +158,7 @@ class PlayingField extends React.Component {
           this.addApprovedCardGroup(finalArray)
           this.removeGroupFromComputerHand(finalArray)
           console.log("found a group!!!!!!!")
+          computerDraw1 = false
         } else {
           console.log("found no group 1")
           computerDraw1 = true
@@ -186,7 +187,7 @@ class PlayingField extends React.Component {
         this.addApprovedCardGroup(straight)
         this.removeGroupFromComputerHand(straight)
         console.log("found a group!!!!!!!")
-        computerDraw1 = false
+        computerDraw2 = false
       } else {
         console.log("found no group 2")
         computerDraw2 = true}
@@ -219,6 +220,8 @@ class PlayingField extends React.Component {
       <PlayerContainer
       playerCards={this.state.playerCards}
       onClickOfCard={this.handleClickOfCard}
+      />
+      <Button
       onClickOfCheck={this.handleClickOfCheck}
       onClickOfDraw={this.handleClickOfDraw}
       />

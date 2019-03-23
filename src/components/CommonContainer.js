@@ -6,7 +6,7 @@ class CommonContainer extends React.Component {
     console.log(this.props.cardGroups)
     let commonCardGroups = this.props.cardGroups.map(group => <Group group={group}/>)
   return (
-    <div className="row">
+    <div className="ui grid">
       {commonCardGroups}
     </div>
   )

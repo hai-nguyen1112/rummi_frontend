@@ -4,10 +4,8 @@ import Card from './Card'
 const PlayerContainer = props => {
   let playerCards = props.playerCards.map(card => <Card key={card.id} card={card} onClickOfCard={props.onClickOfCard}/>)
   return (
-    <div className="forteen column row">
+    <div className="fourteen column row">
       {playerCards}
-      <button onClick={props.onClickOfCheck}>Check</button>
-      <button onClick={props.onClickOfDraw}>Draw Card</button>
     </div>
   )
 }

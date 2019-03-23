@@ -5,7 +5,7 @@ class Group extends React.Component {
   render() {
     let commonCards = this.props.group.map(card => <Card key={card.id} card={card}/>)
     return (
-      <div className="column">
+      <div className="row">
         {commonCards}
       </div>
     )

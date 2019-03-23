@@ -4,7 +4,7 @@ import Card from './Card'
 const ComputerContainer = props => {
   let computerCards = props.computerCards.map(card => <Card key={card.id} card={card}/>)
   return (
-    <div className="row">
+    <div className="fourteen column row">
     {computerCards}
     </div>
   )
