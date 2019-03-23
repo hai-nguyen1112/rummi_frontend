@@ -96,7 +96,6 @@ class PlayingField extends React.Component {
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
           this.setState({playerCardGroup: []})
-          setTimeout(this.computerTurn,1000)
         } else {
           this.setState({playerCardGroup: []})
         }
@@ -113,7 +112,6 @@ class PlayingField extends React.Component {
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
           this.setState({playerCardGroup: []})
-          setTimeout(this.computerTurn,1000)
         } else {
           this.setState({playerCardGroup: []})
         }
@@ -123,6 +121,9 @@ class PlayingField extends React.Component {
     }
   }
 
+  handleClickOfDone = () => {
+    setTimeout(this.computerTurn,1000)
+  }
   handleClickOfDraw = () => {
     let remainingCards = this.state.remainingCards
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
@@ -226,6 +227,7 @@ class PlayingField extends React.Component {
       />
       <Button
       onClickOfCheck={this.handleClickOfCheck}
+      onClickOfDone={this.handleClickOfDone}
       onClickOfDraw={this.handleClickOfDraw}
       />
       </div>

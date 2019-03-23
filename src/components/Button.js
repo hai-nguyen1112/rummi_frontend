@@ -3,7 +3,8 @@ import React from 'react'
 const Button = props => {
   return(
     <>
-    <button onClick={props.onClickOfCheck}>Check</button>
+    <button onClick={props.onClickOfCheck}>Check Group</button>
+    <button onClick={props.onClickOfDone}>I'm done. Computer's turn!</button>
     <button onClick={props.onClickOfDraw}>Draw Card</button>
     </>
   )
