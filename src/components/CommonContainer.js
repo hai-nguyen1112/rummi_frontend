@@ -1,13 +1,12 @@
 import React from 'react'
 // import Card from './Card'
 import Group from './Group'
-
 class CommonContainer extends React.Component {
   render() {
-    let time = Date.now()
-    let commonCardGroups = this.props.cardGroups.map(group => <Group key={time} group={group}/>)
+    console.log(this.props.cardGroups)
+    let commonCardGroups = this.props.cardGroups.map(group => <Group group={group}/>)
   return (
-    <div>
+    <div className="row">
       {commonCardGroups}
     </div>
   )
