@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from './Card'
 
-const CardPool = props => {
+const CommonContainer = props => {
   let commonCards = props.approvedCardGroup.map(card => <Card key={card.id} card={card}/>)
   return (
     <div className="row">
@@ -10,4 +10,4 @@ const CardPool = props => {
   )
 }
 
-export default CardPool
+export default CommonContainer

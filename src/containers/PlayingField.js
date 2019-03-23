@@ -1,7 +1,7 @@
 import React from 'react'
 import ComputerContainer from '../components/ComputerContainer'
 import PlayerContainer from '../components/PlayerContainer'
-import CardPool from '../components/CardPool'
+import CommonContainer from '../components/CommonContainer'
 
 class PlayingField extends React.Component {
   constructor() {
@@ -50,45 +50,50 @@ class PlayingField extends React.Component {
 
   handleClickOfCard = card => {
     let group = this.state.playerCardGroup
-    group.push(card)
+    if (!group.includes(card)) {
+      group.push(card)
+    }
     this.setState({playerCardGroup: group})
   }
 
   handleClickOfCheck = () => {
     let group = this.state.playerCardGroup
-
-    if (group.every((val, i, arr) => val.color === arr[0].color)) {
-      group.sort((a, b) => a.number - b.number)
-      let card = group[0].number - 1
-      let total = 0
-      for (let i=0; i<group.length; i++) {
-        total += group[i].number
-        if (group[i].number === card + 1) {
-          card = group[i].number
+    if (group.length >= 1) {
+      if (group.every((val, i, arr) => val.color === arr[0].color)) {
+        group.sort((a, b) => a.number - b.number)
+        let card = group[0].number - 1
+        let total = 0
+        for (let i=0; i<group.length; i++) {
+          total += group[i].number
+          if (group[i].number === card + 1) {
+            card = group[i].number
+          }
+        }
+        if (card === group[group.length - 1].number && total >= 30 && group.length >= 3) {
+          this.setState({approvedCardGroup: group})
+          this.setState({playerCardGroup: []})
+        } else {
+          this.setState({playerCardGroup: []})
         }
       }
-      if (card === group[group.length - 1].number && total >= 30 && group.length >= 3) {
-        this.setState({approvedCardGroup: group})
-        this.setState({playerCardGroup: []})
-      } else {
-        this.setState({playerCardGroup: []})
-      }
-    }
 
-    if (group.every((val, i, arr) => val.number === arr[0].number)) {
-      let colorGroup = []
-      let total = 0
-      for (let i=0; i<group.length; i++) {
-        total += group[i].number
-        colorGroup.push(group[i].color)
+      if (group.every((val, i, arr) => val.number === arr[0].number)) {
+        let colorGroup = []
+        let total = 0
+        for (let i=0; i<group.length; i++) {
+          total += group[i].number
+          colorGroup.push(group[i].color)
+        }
+        let unique = colorGroup.filter((val, i, arr) => arr.indexOf(val) === i)
+        if (unique.length === group.length && total >= 30 && group.length >= 3) {
+          this.setState({approvedCardGroup: group})
+          this.setState({playerCardGroup: []})
+        } else {
+          this.setState({playerCardGroup: []})
+        }
       }
-      let unique = colorGroup.filter((val, i, arr) => arr.indexOf(val) === i)
-      if (unique.length === group.length && total >= 30 && group.length >= 3) {
-        this.setState({approvedCardGroup: group})
-        this.setState({playerCardGroup: []})
-      } else {
-        this.setState({playerCardGroup: []})
-      }
+    } else {
+      this.setState({playerCardGroup: []})
     }
   }
 
@@ -98,7 +103,7 @@ class PlayingField extends React.Component {
         <ComputerContainer
           computerCards={this.state.computerCards}
         />
-        <CardPool
+        <CommonContainer
           approvedCardGroup={this.state.approvedCardGroup}
         />
         <PlayerContainer
