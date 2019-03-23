@@ -7,6 +7,7 @@ const PlayerContainer = props => {
     <div className="forteen column row">
       {playerCards}
       <button onClick={props.onClickOfCheck}>Check</button>
+      <button onClick={props.onClickOfDraw}>Draw Card</button>
     </div>
   )
 }

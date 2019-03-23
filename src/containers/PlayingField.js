@@ -11,8 +11,19 @@ class PlayingField extends React.Component {
       playerCards: [],
       remainingCards: [],
       playerCardGroup: [],
-      approvedCardGroup: []
+      approvedCardGroup: [],
+      cardGroups: []
     }
+  }
+
+  addApprovedCardGroup = (cards) => {
+    this.setState({cardGroups: [...this.state.cardGroups, cards] })
+  }
+
+  removeGroupFromHand = (group) => {
+    let arr = this.state.playerCards
+    arr = arr.filter(card => !group.includes(card))
+    this.setState({playerCards: arr})
   }
 
   generateComputerCards = cards => {
@@ -62,15 +73,16 @@ class PlayingField extends React.Component {
       if (group.every((val, i, arr) => val.color === arr[0].color)) {
         group.sort((a, b) => a.number - b.number)
         let card = group[0].number - 1
-        let total = 0
         for (let i=0; i<group.length; i++) {
-          total += group[i].number
           if (group[i].number === card + 1) {
             card = group[i].number
           }
         }
-        if (card === group[group.length - 1].number && total >= 30 && group.length >= 3) {
+        if (card === group[group.length - 1].number &&  group.length >= 3) {
           this.setState({approvedCardGroup: group})
+          this.removeGroupFromHand(group)
+          this.addApprovedCardGroup(group)
+          this.computerTurn()
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -79,14 +91,15 @@ class PlayingField extends React.Component {
 
       if (group.every((val, i, arr) => val.number === arr[0].number)) {
         let colorGroup = []
-        let total = 0
         for (let i=0; i<group.length; i++) {
-          total += group[i].number
           colorGroup.push(group[i].color)
         }
         let unique = colorGroup.filter((val, i, arr) => arr.indexOf(val) === i)
-        if (unique.length === group.length && total >= 30 && group.length >= 3) {
+        if (unique.length === group.length && group.length >= 3) {
           this.setState({approvedCardGroup: group})
+          this.removeGroupFromHand(group)
+          this.addApprovedCardGroup(group)
+          this.computerTurn()
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -97,6 +110,23 @@ class PlayingField extends React.Component {
     }
   }
 
+  handleClickOfDraw = () => {
+    let remainingCards = this.state.remainingCards
+    let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
+    this.setState({playerCards: [...this.state.playerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
+    this.computerTurn()
+  }
+
+  computerTurn = () => {
+    console.log("it's my turn now mwahaha - computer")
+    // grab computer cards
+    // see if it can create a group
+    // if not draw card and end turn
+
+
+    // stretch: if not, see if it can add to common card group before or after
+  }
+
   render() {
     return (
       <div className="ui vertically divided grid">
@@ -104,12 +134,13 @@ class PlayingField extends React.Component {
           computerCards={this.state.computerCards}
         />
         <CommonContainer
-          approvedCardGroup={this.state.approvedCardGroup}
+          cardGroups={this.state.cardGroups}
         />
         <PlayerContainer
           playerCards={this.state.playerCards}
           onClickOfCard={this.handleClickOfCard}
           onClickOfCheck={this.handleClickOfCheck}
+          onClickOfDraw={this.handleClickOfDraw}
         />
       </div>
     )

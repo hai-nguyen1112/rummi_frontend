@@ -1,13 +1,17 @@
 import React from 'react'
-import Card from './Card'
+// import Card from './Card'
+import Group from './Group'
 
-const CommonContainer = props => {
-  let commonCards = props.approvedCardGroup.map(card => <Card key={card.id} card={card}/>)
+class CommonContainer extends React.Component {
+  render() {
+    let time = Date.now()
+    let commonCardGroups = this.props.cardGroups.map(group => <Group key={time} group={group}/>)
   return (
-    <div className="row">
-    {commonCards}
+    <div>
+      {commonCardGroups}
     </div>
   )
+  }
 }
 
 export default CommonContainer
