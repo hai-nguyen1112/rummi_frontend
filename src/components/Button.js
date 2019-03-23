@@ -5,7 +5,7 @@ const Button = props => {
     <>
     <button onClick={props.onClickOfCheck}>Check Group</button>
     <button onClick={props.onClickOfDone}>I'm done. Computer's turn!</button>
-    <button onClick={props.onClickOfDraw}>Draw Card</button>
+    <button id={"drawButton"} onClick={props.onClickOfDraw}>Draw Card</button>
     </>
   )
 }

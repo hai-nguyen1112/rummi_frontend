@@ -95,6 +95,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          document.getElementById("drawButton").disabled = true
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -111,6 +112,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          document.getElementById("drawButton").disabled = true
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -123,6 +125,7 @@ class PlayingField extends React.Component {
 
   handleClickOfDone = () => {
     setTimeout(this.computerTurn,1000)
+    document.getElementById("drawButton").disabled = false
   }
   handleClickOfDraw = () => {
     let remainingCards = this.state.remainingCards
