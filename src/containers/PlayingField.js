@@ -77,6 +77,8 @@ class PlayingField extends React.Component {
       let playerCards = this.generatePlayerCards(cards)
       this.setState({computerCards: computerCards, playerCards: playerCards, remainingCards: cards})
     })
+    document.getElementById("doneButton").disabled = true
+
   }
 
   handleClickOfCard = card => {
@@ -106,6 +108,7 @@ class PlayingField extends React.Component {
           this.addApprovedCardGroup(group)
           this.setState({playerScore: this.state.playerScore+1})
           document.getElementById("drawButton").disabled = true
+          document.getElementById("doneButton").disabled = false
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -124,6 +127,7 @@ class PlayingField extends React.Component {
           this.addApprovedCardGroup(group)
           this.setState({playerScore: this.state.playerScore+1})
           document.getElementById("drawButton").disabled = true
+          document.getElementById("doneButton").disabled = false
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -154,11 +158,19 @@ class PlayingField extends React.Component {
 
   }
 
+  toggleButtons = (input) => {
+    document.getElementById("doneButton").disabled = input
+    document.getElementById("drawButton").disabled = input
+    document.getElementById("checkButton").disabled = input
+    document.getElementById("clearButton").disabled = input
+  }
+
+
   computerTurn = () => {
+    this.toggleButtons(true)
     computerdrawarray = []
     console.log("it's my turn now mwahaha - computer")
     this.setState({computerStatement: "It's my turn now."})
-    document.getElementById("doneButton").disabled = false
     // grab computer cards
     let computerCards = this.state.computerCards
     let byNumber = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[],13:[]}
@@ -191,35 +203,94 @@ class PlayingField extends React.Component {
     let remainingComputerCards = this.state.computerCards
     let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
     remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
+
     for (const color in byColor) {
       byColor[color].sort((a, b) => a.number - b.number)
+      byColor[color] = this.unique(byColor[color])
+      console.log("sorted and uniq group",byColor[color])
     }
 
     for (const color in byColor) {
-      let lastI = 0
-      let count = 1
-      for (let i = 0; i<byColor[color].length-1;i++) {
-        if (byColor[color][i+1].number === byColor[color][i].number +1) {
-          count += 1
-          lastI=i+1
-        } else {
-          count = 1
-        }
-      }
-      if (count >= 3) {
-        let straight = byColor[color].slice((lastI-count)+1,lastI+1)
-        this.addApprovedCardGroup(straight)
-        this.removeGroupFromComputerHand(straight)
-        this.setState({computerScore: this.state.computerScore+1})
-        this.setState({computerStatement: "I found a group."})
-        console.log("found a group!!!!!!! 2")
-        computerdrawarray.push("found")
+      let k = byColor[color][0] - 1
+      let straightGroup = []
+      let straightGroupArray = []
+      for (let i=0; i<byColor[color].length; i++) {
+      if (byColor[color][i].number === k + 1) {
+          straightGroup.push(byColor[color][i])
+          k = byColor[color][i].number
+  		if (i === byColor[color].length - 1 && straightGroup.length >= 3) {
+  			straightGroupArray.push(straightGroup)
+          }
       } else {
-        console.log("found no group 2")
+          if (straightGroup.length >= 3) {
+              straightGroupArray.push(straightGroup)
+              k = byColor[color][i].number
+  			straightGroup = []
+              straightGroup.push(byColor[color][i])
+          } else {
+              k = byColor[color][i].number
+              straightGroup = []
+              straightGroup.push(byColor[color][i])
+          }
       }
+  }
+
+      if (!_.isEmpty(straightGroupArray)) {
+        console.log("step 4")
+
+        straightGroupArray.forEach(straight => {
+          console.log("step 5")
+
+          this.addApprovedCardGroup(straight)
+           this.removeGroupFromComputerHand(straight)
+           this.setState({computerScore: this.state.computerScore+1})
+           this.setState({computerStatement: "I found a group."})
+           console.log("found a group!!!!!!! 2")
+           computerdrawarray.push("found")
+         }
+        )
       }
     }
+
+    // for (const color in byColor) {
+    //   let lastI = 0
+    //   let count = 1
+    //   for (let i = 0; i<byColor[color].length-1;i++) {
+    //     console.log("is it still sorted group",byColor[color])
+    //     if (byColor[color][i+1].number === byColor[color][i].number +1) {
+    //       console.log(byColor[color][i+1].number + " compared to " + byColor[color][i].number)
+    //       count += 1
+    //       console.log("count is", count)
+    //       lastI=i+1
+    //     } else if (count < 3 && byColor[color][i+1].number !== byColor[color][i].number +1) {
+    //       count = 1
+    //       console.log("reset count")
+    //     }
+    //   }
+      // if (count >= 3) {
+      //   let straight = byColor[color].slice((lastI-count)+1,lastI+1)
+      //   this.addApprovedCardGroup(straight)
+      //   this.removeGroupFromComputerHand(straight)
+      //   this.setState({computerScore: this.state.computerScore+1})
+      //   this.setState({computerStatement: "I found a group."})
+      //   console.log("found a group!!!!!!! 2")
+      //   computerdrawarray.push("found")
+      // } else {
+      //   console.log("found no group 2")
+      // }
+    }
     this.computerDrawCard()
+  }
+
+  unique = (array) => {
+    let storage = []
+    let newArray = []
+    array.forEach(card=>
+    {if (!storage.includes(card.number)) {
+    storage.push(card.number)
+    newArray.push(card)}
+    })
+    return newArray
   }
 
   computerDrawCard = () => {
@@ -230,6 +301,7 @@ class PlayingField extends React.Component {
       console.log('computer does not need to draw a card')
       this.setState({computerStatement: "I submitted my groups. Your turn."})
     }
+    this.toggleButtons(false)
   }
 
   handleClickOfCommonCard = (card) =>{
@@ -249,7 +321,6 @@ class PlayingField extends React.Component {
     // console.log(card)
     // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
     // }
-    //
   }
 
 

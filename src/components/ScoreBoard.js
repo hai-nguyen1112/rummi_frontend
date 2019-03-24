@@ -2,13 +2,14 @@ import React from 'react'
 import Group from './Group'
 // centered ui raised card
 // <div className="ui piled segment">
-//   <p >
+//   <p>
 //     {props.playerCardGroup && <Group group={props.playerCardGroup}/>}
 //   </p>
 // </div>
+
 const ScoreBoard = props => {
   return(
-    <>
+    <>z
     <div className="ui statistics">
       <div className="statistic">
         <div className="value">
