@@ -1,5 +1,11 @@
 import React from 'react'
-
+import Group from './Group'
+// centered ui raised card
+// <div className="ui piled segment">
+//   <p >
+//     {props.playerCardGroup && <Group group={props.playerCardGroup}/>}
+//   </p>
+// </div>
 const ScoreBoard = props => {
   return(
     <>

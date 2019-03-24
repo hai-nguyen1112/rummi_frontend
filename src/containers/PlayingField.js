@@ -5,8 +5,7 @@ import CommonContainer from '../components/CommonContainer'
 import Button from  '../components/Button'
 import ScoreBoard from  '../components/ScoreBoard'
 var _ = require('underscore')
-let computerDraw1 = false
-let computerDraw2 = false
+let computerdrawarray = []
 
 class PlayingField extends React.Component {
   constructor() {
@@ -151,9 +150,12 @@ class PlayingField extends React.Component {
     let remainingCards = this.state.remainingCards
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({computerCards: [...this.state.computerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
+    this.setState({computerStatement: "I drew a card. Your turn."})
+
   }
 
   computerTurn = () => {
+    computerdrawarray = []
     console.log("it's my turn now mwahaha - computer")
     this.setState({computerStatement: "It's my turn now."})
     document.getElementById("doneButton").disabled = false
@@ -179,14 +181,12 @@ class PlayingField extends React.Component {
           this.setState({computerScore: this.state.computerScore+1})
           this.setState({computerStatement: "I found a group."})
           console.log("found a group!!!!!!! 1")
-          computerDraw1 = false
+          computerdrawarray.push("found")
         } else {
           console.log("found no group 1a")
-          computerDraw1 = true
       }
     }  else {
       console.log("found no group 1b")
-      computerDraw1 = true
   }
     let remainingComputerCards = this.state.computerCards
     let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
@@ -213,25 +213,19 @@ class PlayingField extends React.Component {
         this.setState({computerScore: this.state.computerScore+1})
         this.setState({computerStatement: "I found a group."})
         console.log("found a group!!!!!!! 2")
-        computerDraw1 = false
-        computerDraw2 = false
+        computerdrawarray.push("found")
       } else {
         console.log("found no group 2")
-        if (computerDraw1 === true)
-        {computerDraw2 = true}}
-
+      }
       }
     }
     this.computerDrawCard()
   }
 
   computerDrawCard = () => {
-    if (computerDraw1 && computerDraw2) {
+    if (!computerdrawarray.includes("found")) {
       console.log('computer draws a card')
       this.drawCardForComputer()
-      this.setState({computerStatement: "Computer drew a card. Your turn."})
-      computerDraw1 = false
-      computerDraw2 = false
     } else {
       console.log('computer does not need to draw a card')
       this.setState({computerStatement: "I submitted my groups. Your turn."})
@@ -246,7 +240,7 @@ class PlayingField extends React.Component {
     //add your card to that group and remove that card from your hand
     //if different colors if group is less than 4
     //if a mapped array of the cards color does not include card of the same number, different color
-    // add that color to the group and remove from your hand 
+    // add that color to the group and remove from your hand
   }
 
 
@@ -258,7 +252,7 @@ class PlayingField extends React.Component {
       computerScore={this.state.computerScore}
       playerScore={this.state.playerScore}
       computerStatement={this.state.computerStatement}
-
+      playerCardGroup={this.state.playerCardGroup}
       />
       <ComputerContainer
       computerCards={this.state.computerCards}

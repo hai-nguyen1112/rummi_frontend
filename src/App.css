@@ -37,3 +37,9 @@
   height: 150px;
   justify-content: center;
 }
+
+
+.ui .statistics {
+  padding-top:25px;
+  margin-left:5px;
+}
