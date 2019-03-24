@@ -249,6 +249,7 @@ class PlayingField extends React.Component {
     // console.log(card)
     // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
     // }
+    //
   }
 
 
