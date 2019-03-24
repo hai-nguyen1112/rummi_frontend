@@ -3,6 +3,7 @@ import ComputerContainer from '../components/ComputerContainer'
 import PlayerContainer from '../components/PlayerContainer'
 import CommonContainer from '../components/CommonContainer'
 import Button from  '../components/Button'
+import ScoreBoard from  '../components/ScoreBoard'
 var _ = require('underscore')
 let computerDraw1 = false
 let computerDraw2 = false
@@ -236,7 +237,12 @@ class PlayingField extends React.Component {
 
   render() {
     return (
+      <>
       <div className="ui vertically divided grid board">
+      <ScoreBoard
+      computerScore={this.state.computerScore}
+      playerScore={this.state.playerScore}
+      />
       <ComputerContainer
       computerCards={this.state.computerCards}
       />
@@ -253,10 +259,9 @@ class PlayingField extends React.Component {
       onClickOfClear={this.clearGroup}
       onClickOfDone={this.handleClickOfDone}
       onClickOfDraw={this.handleClickOfDraw}
-      computerScore={this.state.computerScore}
-      playerScore={this.state.playerScore}
       />
       </div>
+      </>
     )
   }
 }
