@@ -77,8 +77,7 @@ class PlayingField extends React.Component {
       let playerCards = this.generatePlayerCards(cards)
       this.setState({computerCards: computerCards, playerCards: playerCards, remainingCards: cards})
     })
-    document.getElementById("doneButton").disabled = true
-
+    this.toggleDoneButton(true)
   }
 
   handleClickOfCard = card => {
@@ -106,9 +105,9 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.toggleDoneButton(false)
+          this.toggleDrawButton(true)
           this.setState({playerScore: this.state.playerScore+1})
-          document.getElementById("drawButton").disabled = true
-          document.getElementById("doneButton").disabled = false
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -125,9 +124,9 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.toggleDoneButton(false)
+          this.toggleDrawButton(true)
           this.setState({playerScore: this.state.playerScore+1})
-          document.getElementById("drawButton").disabled = true
-          document.getElementById("doneButton").disabled = false
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -140,8 +139,6 @@ class PlayingField extends React.Component {
 
   handleClickOfDone = () => {
     setTimeout(this.computerTurn,1000)
-    document.getElementById("drawButton").disabled = false
-    document.getElementById("doneButton").disabled = true
   }
   handleClickOfDraw = () => {
     let remainingCards = this.state.remainingCards
@@ -158,16 +155,18 @@ class PlayingField extends React.Component {
 
   }
 
-  toggleButtons = (input) => {
+  toggleDoneButton = (input) => {
     document.getElementById("doneButton").disabled = input
+  }
+
+  toggleDrawButton = (input) => {
     document.getElementById("drawButton").disabled = input
-    document.getElementById("checkButton").disabled = input
-    document.getElementById("clearButton").disabled = input
   }
 
 
   computerTurn = () => {
-    this.toggleButtons(true)
+    this.toggleDoneButton(true)
+    this.toggleDrawButton(false)
     computerdrawarray = []
     console.log("it's my turn now mwahaha - computer")
     this.setState({computerStatement: "It's my turn now."})
@@ -252,32 +251,7 @@ class PlayingField extends React.Component {
       }
     }
 
-    // for (const color in byColor) {
-    //   let lastI = 0
-    //   let count = 1
-    //   for (let i = 0; i<byColor[color].length-1;i++) {
-    //     console.log("is it still sorted group",byColor[color])
-    //     if (byColor[color][i+1].number === byColor[color][i].number +1) {
-    //       console.log(byColor[color][i+1].number + " compared to " + byColor[color][i].number)
-    //       count += 1
-    //       console.log("count is", count)
-    //       lastI=i+1
-    //     } else if (count < 3 && byColor[color][i+1].number !== byColor[color][i].number +1) {
-    //       count = 1
-    //       console.log("reset count")
-    //     }
-    //   }
-      // if (count >= 3) {
-      //   let straight = byColor[color].slice((lastI-count)+1,lastI+1)
-      //   this.addApprovedCardGroup(straight)
-      //   this.removeGroupFromComputerHand(straight)
-      //   this.setState({computerScore: this.state.computerScore+1})
-      //   this.setState({computerStatement: "I found a group."})
-      //   console.log("found a group!!!!!!! 2")
-      //   computerdrawarray.push("found")
-      // } else {
-      //   console.log("found no group 2")
-      // }
+
     }
     this.computerDrawCard()
   }
@@ -301,7 +275,6 @@ class PlayingField extends React.Component {
       console.log('computer does not need to draw a card')
       this.setState({computerStatement: "I submitted my groups. Your turn."})
     }
-    this.toggleButtons(false)
   }
 
   handleClickOfCommonCard = (card) =>{
