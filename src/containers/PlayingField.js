@@ -21,8 +21,14 @@ class PlayingField extends React.Component {
   }
 
   addApprovedCardGroup = (cards) => {
+    if (!this.state.cardGroups.includes(cards)) {
     this.setState({cardGroups: [...this.state.cardGroups, cards] })
-    console.log("card groups",this.state.cardGroups)
+  }
+      console.log("card groups",this.state.cardGroups)
+  }
+
+  clearGroup = () => {
+    this.setState({playerCardGroup: []})
   }
 
   removeGroupFromPlayerHand = (group) => {
@@ -230,6 +236,7 @@ class PlayingField extends React.Component {
       />
       <Button
       onClickOfCheck={this.handleClickOfCheck}
+      onClickOfClear={this.clearGroup}
       onClickOfDone={this.handleClickOfDone}
       onClickOfDraw={this.handleClickOfDraw}
       />
