@@ -239,9 +239,14 @@ class PlayingField extends React.Component {
   }
 
   handleClickOfCommonCard = (card) =>{
-    if (this.state.cardGroups.includes(card)) {
-      console.log(this.state.cardGroups.filter(cardGroup=>this.state.cardGroups.includes(card)))
-    }
+    console.log("yooooooooo")
+    console.log(this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0])
+    // if all same color
+    //if you have a card that is +1 last card or -1 last card
+    //add your card to that group and remove that card from your hand
+    //if different colors if group is less than 4
+    //if a mapped array of the cards color does not include card of the same number, different color
+    // add that color to the group and remove from your hand 
   }
 
 
