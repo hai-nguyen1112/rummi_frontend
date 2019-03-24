@@ -19,7 +19,8 @@ class PlayingField extends React.Component {
       approvedCardGroup: [],
       cardGroups: [],
       playerScore: 0,
-      computerScore: 0
+      computerScore: 0,
+      computerStatement: "Welcome to Rummi. You start."
     }
   }
 
@@ -137,6 +138,7 @@ class PlayingField extends React.Component {
   handleClickOfDone = () => {
     setTimeout(this.computerTurn,1000)
     document.getElementById("drawButton").disabled = false
+    document.getElementById("doneButton").disabled = true
   }
   handleClickOfDraw = () => {
     let remainingCards = this.state.remainingCards
@@ -153,6 +155,8 @@ class PlayingField extends React.Component {
 
   computerTurn = () => {
     console.log("it's my turn now mwahaha - computer")
+    this.setState({computerStatement: "It's my turn now."})
+    document.getElementById("doneButton").disabled = false
     // grab computer cards
     let computerCards = this.state.computerCards
     let byNumber = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[],13:[]}
@@ -173,14 +177,15 @@ class PlayingField extends React.Component {
           this.addApprovedCardGroup(finalArray)
           this.removeGroupFromComputerHand(finalArray)
           this.setState({computerScore: this.state.computerScore+1})
-          console.log("found a group!!!!!!!")
+          this.setState({computerStatement: "I found a group."})
+          console.log("found a group!!!!!!! 1")
           computerDraw1 = false
         } else {
-          console.log("found no group 1")
+          console.log("found no group 1a")
           computerDraw1 = true
       }
     }  else {
-      console.log("found no group 1")
+      console.log("found no group 1b")
       computerDraw1 = true
   }
     let remainingComputerCards = this.state.computerCards
@@ -206,11 +211,14 @@ class PlayingField extends React.Component {
         this.addApprovedCardGroup(straight)
         this.removeGroupFromComputerHand(straight)
         this.setState({computerScore: this.state.computerScore+1})
-        console.log("found a group!!!!!!!")
+        this.setState({computerStatement: "I found a group."})
+        console.log("found a group!!!!!!! 2")
+        computerDraw1 = false
         computerDraw2 = false
       } else {
         console.log("found no group 2")
-        computerDraw2 = true}
+        if (computerDraw1 === true)
+        {computerDraw2 = true}}
 
       }
     }
@@ -221,10 +229,12 @@ class PlayingField extends React.Component {
     if (computerDraw1 && computerDraw2) {
       console.log('computer draws a card')
       this.drawCardForComputer()
+      this.setState({computerStatement: "Computer drew a card. Your turn."})
       computerDraw1 = false
       computerDraw2 = false
     } else {
       console.log('computer does not need to draw a card')
+      this.setState({computerStatement: "I submitted my groups. Your turn."})
     }
   }
 
@@ -242,6 +252,8 @@ class PlayingField extends React.Component {
       <ScoreBoard
       computerScore={this.state.computerScore}
       playerScore={this.state.playerScore}
+      computerStatement={this.state.computerStatement}
+
       />
       <ComputerContainer
       computerCards={this.state.computerCards}
