@@ -19,7 +19,7 @@ class PlayingField extends React.Component {
       cardGroups: [],
       playerScore: 0,
       computerScore: 0,
-      computerStatement: "Welcome to Rummi. You start."
+      computerStatement: "Hi, I'm Rummi. Let's play a game. You start."
     }
   }
 
@@ -243,6 +243,14 @@ class PlayingField extends React.Component {
     // add that color to the group and remove from your hand
   }
 
+  onHoverOfCard = (card) => {
+    // find all cards of this color
+    // make them "glow"
+    // console.log(card)
+    // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
+    // }
+  }
+
 
   render() {
     return (
@@ -264,6 +272,7 @@ class PlayingField extends React.Component {
       <PlayerContainer
       playerCards={this.state.playerCards}
       onClickOfCard={this.handleClickOfCard}
+      onHoverOfCard={this.onHoverOfCard}
       />
       <Button
       onClickOfCheck={this.handleClickOfCheck}
