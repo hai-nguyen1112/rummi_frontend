@@ -165,8 +165,6 @@ class PlayingField extends React.Component {
 
 
   computerTurn = () => {
-    this.toggleDoneButton(true)
-    this.toggleDrawButton(false)
     computerdrawarray = []
     console.log("it's my turn now mwahaha - computer")
     this.setState({computerStatement: "It's my turn now."})
@@ -251,7 +249,6 @@ class PlayingField extends React.Component {
       }
     }
 
-
     }
     this.computerDrawCard()
   }
@@ -275,6 +272,8 @@ class PlayingField extends React.Component {
       console.log('computer does not need to draw a card')
       this.setState({computerStatement: "I submitted my groups. Your turn."})
     }
+    this.toggleDoneButton(true)
+    this.toggleDrawButton(false)
   }
 
   handleClickOfCommonCard = (card) =>{
