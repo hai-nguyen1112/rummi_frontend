@@ -16,7 +16,9 @@ class PlayingField extends React.Component {
       remainingCards: [],
       playerCardGroup: [],
       approvedCardGroup: [],
-      cardGroups: []
+      cardGroups: [],
+      playerScore: 0,
+      computerScore: 0
     }
   }
 
@@ -101,6 +103,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.setState({playerScore: this.state.playerScore+1})
           document.getElementById("drawButton").disabled = true
           this.setState({playerCardGroup: []})
         } else {
@@ -118,6 +121,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.setState({playerScore: this.state.playerScore+1})
           document.getElementById("drawButton").disabled = true
           this.setState({playerCardGroup: []})
         } else {
@@ -167,6 +171,7 @@ class PlayingField extends React.Component {
         if (finalArray.length >= 3) {
           this.addApprovedCardGroup(finalArray)
           this.removeGroupFromComputerHand(finalArray)
+          this.setState({computerScore: this.state.computerScore+1})
           console.log("found a group!!!!!!!")
           computerDraw1 = false
         } else {
@@ -199,6 +204,7 @@ class PlayingField extends React.Component {
         let straight = byColor[color].slice((lastI-count)+1,lastI+1)
         this.addApprovedCardGroup(straight)
         this.removeGroupFromComputerHand(straight)
+        this.setState({computerScore: this.state.computerScore+1})
         console.log("found a group!!!!!!!")
         computerDraw2 = false
       } else {
@@ -221,14 +227,22 @@ class PlayingField extends React.Component {
     }
   }
 
+  handleClickOfCommonCard = (card) =>{
+    if (this.state.cardGroups.includes(card)) {
+      console.log(this.state.cardGroups.filter(cardGroup=>this.state.cardGroups.includes(card)))
+    }
+  }
+
+
   render() {
     return (
-      <div className="ui vertically divided grid">
+      <div className="ui vertically divided grid board">
       <ComputerContainer
       computerCards={this.state.computerCards}
       />
       <CommonContainer
       cardGroups={this.state.cardGroups}
+      onClickOfCard={this.handleClickOfCommonCard}
       />
       <PlayerContainer
       playerCards={this.state.playerCards}
@@ -239,6 +253,8 @@ class PlayingField extends React.Component {
       onClickOfClear={this.clearGroup}
       onClickOfDone={this.handleClickOfDone}
       onClickOfDraw={this.handleClickOfDraw}
+      computerScore={this.state.computerScore}
+      playerScore={this.state.playerScore}
       />
       </div>
     )

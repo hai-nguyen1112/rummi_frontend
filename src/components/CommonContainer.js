@@ -3,10 +3,9 @@ import React from 'react'
 import Group from './Group'
 class CommonContainer extends React.Component {
   render() {
-    console.log(this.props.cardGroups)
-    let commonCardGroups = this.props.cardGroups.map(group => <Group onClick={(event)=>{console.log(event.target.value)}} group={group}/>)
+    let commonCardGroups = this.props.cardGroups.map(group => <Group key={this.props.cardGroups.indexOf(group)} onClickofCard={this.props.onClickOfCard} group={group}/>)
   return (
-    <div className="ui grid">
+    <div className="ui grid" id={"board"}>
       {commonCardGroups}
     </div>
   )

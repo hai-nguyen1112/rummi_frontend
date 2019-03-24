@@ -37,3 +37,11 @@
   height: 150px;
   justify-content: center;
 }
+
+#board {
+  background-color: '#EDE1D1';
+}
+
+.board {
+  margin: 20px;
+}
