@@ -402,6 +402,12 @@ class PlayingField extends React.Component {
           // }
         }
 
+        //stretch: break up groups
+        //if straight or color group is greater than 3
+        //if you click a group and two or more of your cards afterwards
+        // if it makes an approved group
+        // remove from card group and remove from hand
+
 
         render() {
           return (
