@@ -2,11 +2,9 @@ import React from 'react'
 
 const Card = props => {
   return (
-    <div className="column">
-      <div className="ui card" style={{background: props.card.color, color: 'white'}} onMouseOver={() => props.onHoverOfCard(props.card)} onClick={() => props.onClickOfCard(props.card)}>
+      <div className="hello" style={{background: props.card.color, color: 'white'}} onMouseEnter={(e)=>props.onCardMouseEnter(e)} onMouseLeave={(e)=>props.onCardMouseLeave(e)} onClick={(e) => {props.onClickOfCard(props.card); props.highlight(e)}}>
           {props.card.number}
       </div>
-    </div>
   )
 }
 

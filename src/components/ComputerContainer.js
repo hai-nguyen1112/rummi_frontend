@@ -2,9 +2,9 @@ import React from 'react'
 import Card from './Card'
 
 const ComputerContainer = props => {
-  let computerCards = props.computerCards.map(card => <Card key={card.id} card={card} onHoverOfCard={()=>{""}}/>)
+  let computerCards = props.computerCards.map(card => <Card onCardMouseEnter={() => {}} onCardMouseLeave={() => {}} key={card.id} card={card}/>)
   return (
-    <div className="fourteen column row">
+    <div className="grid-item item2">
     {computerCards}
     </div>
   )

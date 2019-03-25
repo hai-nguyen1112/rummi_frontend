@@ -45,6 +45,9 @@ class PlayingField extends React.Component {
   }
 
   clearGroup = () => {
+    while (document.getElementById("highlight1")) {
+      document.getElementById("highlight1").id = ""
+    }
     this.setState({playerCardGroup: []})
   }
 
@@ -430,6 +433,10 @@ class PlayingField extends React.Component {
           this.toggleDrawButton(false)}
         }
 
+        highlightGroup = (e) => {
+          console.log("cool")
+        }
+
         handleClickOfCommonCard = (card) =>{
           console.log("yooooooooo")
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
@@ -509,12 +516,18 @@ class PlayingField extends React.Component {
             this.setState({playerCardGroup: []})
           }
 
-          onHoverOfCard = (card) => {
-            // find all cards of this color
-            // make them "glow"
-            // console.log(card)
-            // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
-            // }
+          onCardMouseEnter = (e) => {
+            e.target.id = "highlight"
+          }
+
+          highlight = (e) => {
+            console.log(e.target)
+            e.target.id = "highlight1"
+          }
+
+          onCardMouseLeave = (e) => {
+            if (e.target.id !== "highlight1") {
+            e.target.id = ""}
           }
 
           //stretch: break up groups
@@ -527,7 +540,7 @@ class PlayingField extends React.Component {
           render() {
             return (
               <>
-              <div className="ui vertically divided grid board">
+              <div class="grid-container">
                 <ScoreBoard
                   computerScore={this.state.computerScore}
                   playerScore={this.state.playerScore}
@@ -540,11 +553,14 @@ class PlayingField extends React.Component {
                 <CommonContainer
                   cardGroups={this.state.cardGroups}
                   onClickOfCard={this.handleClickOfCommonCard}
+                  highlightGroup={this.highlightGroup}
                   />
                 <PlayerContainer
                   playerCards={this.state.playerCards}
                   onClickOfCard={this.handleClickOfCard}
-                  onHoverOfCard={this.onHoverOfCard}
+                  onCardMouseEnter={this.onCardMouseEnter}
+                  onCardMouseLeave={this.onCardMouseLeave}
+                  highlight={this.highlight}
                   />
                 <Button
                   onClickOfCheck={this.handleClickOfCheck}
@@ -552,7 +568,7 @@ class PlayingField extends React.Component {
                   onClickOfDone={this.handleClickOfDone}
                   onClickOfDraw={this.handleClickOfDraw}
                   />
-              </div>
+            </div>
               </>
           )
         }

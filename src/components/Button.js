@@ -2,7 +2,7 @@ import React from 'react'
 
 const Button = props => {
   return(
-    <>
+    <div className="grid-item item5">
     <div className="ui large buttons">
     <button className={"ui button"} id={"checkButton"} data-tooltip="Select at least three cards that satisfy the rummikub requirements." data-position="top left" onClick={props.onClickOfCheck}>Submit a Group</button>
     <div className="or"></div>
@@ -12,7 +12,7 @@ const Button = props => {
     <div className="or"></div>
     <button className={"ui button"} id={"drawButton"} data-tooltip="If you can't make a move, skip your turn by drawing a card." data-position="top left" onClick={props.onClickOfDraw}>Draw Card</button>
     </div>
-    </>
+    </div>
   )
 }
 

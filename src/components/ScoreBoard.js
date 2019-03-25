@@ -9,8 +9,9 @@ import Group from './Group'
 
 const ScoreBoard = props => {
   return(
-    <>z
-    <div className="ui statistics">
+    <>
+    <div className="grid-item item1" id="scoreheader">
+    <div className="ui statistics" id="stats">
       <div className="statistic">
         <div className="value">
         {props.playerScore}
@@ -27,13 +28,16 @@ const ScoreBoard = props => {
           Computer Score
         </div>
       </div>
-      </div>
-      <div className="ui piled segment">
+    </div>
+  </div>
+
+      <div className="grid-item item6">
         <p>
           {props.computerStatement}
         </p>
       </div>
-  </>
+
+    </>
   )
 }
 
