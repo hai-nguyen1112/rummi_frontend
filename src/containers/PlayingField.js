@@ -274,29 +274,8 @@ class PlayingField extends React.Component {
       }
     }
 
-    // let allColorGroups = this.state.colorGroups
-    // let allComputerCards = this.state.computerCards
-    //
-    // allColorGroups.forEach(group=>{
-    //   if group.length < 4 {
-    //     allComputerCards.forEach(card=>{
-    //
-    //
-    //     })
-    //
-    //   }
-    // }
-    // )
-    //
-    // let allStaightGroups = this.state.straightGroups
-    // let firstStraightCards = []
-    // let lastStraightCards = []
-    //
-    // allStaightGroups.forEach(group=>{
-    //   firstStraightCards.push(group[0])
-    //   lastStraightCards.push(group[group.length-1])
-    // })
-    // hiiiiii haaaaaai
+
+    
 
     this.computerDrawCard()
   }
