@@ -296,7 +296,7 @@ class PlayingField extends React.Component {
     //   firstStraightCards.push(group[0])
     //   lastStraightCards.push(group[group.length-1])
     // })
-    // hiiiiii haaaaaai
+    // hiiiiii haaaaaai again
 
     this.computerDrawCard()
   }
