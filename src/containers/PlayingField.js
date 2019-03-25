@@ -101,6 +101,10 @@ class PlayingField extends React.Component {
   }
 
   handleClickOfCard = card => {
+    if (_.isEmpty(this.state.remainingCards)) {
+      this.toggleDrawButton(true)
+      console.log("no more cards in deck")
+    }
     let group = this.state.playerCardGroup
     if (!group.includes(card)) {
       group.push(card)
@@ -128,7 +132,7 @@ class PlayingField extends React.Component {
           this.addStraightGroup(group)
           this.toggleDoneButton(false)
           this.toggleDrawButton(true)
-          this.setState({playerScore: this.state.playerScore+1})
+          this.setState({playerScore: this.state.playerScore+group.length})
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -148,7 +152,7 @@ class PlayingField extends React.Component {
           this.addColorGroup(group)
           this.toggleDoneButton(false)
           this.toggleDrawButton(true)
-          this.setState({playerScore: this.state.playerScore+1})
+          this.setState({playerScore: this.state.playerScore+group.length})
           this.setState({playerCardGroup: []})
         } else {
           this.setState({playerCardGroup: []})
@@ -208,7 +212,7 @@ class PlayingField extends React.Component {
             this.addApprovedCardGroup(finalArray)
             this.removeGroupFromComputerHand(finalArray)
             this.addColorGroup(finalArray)
-            this.setState({computerScore: this.state.computerScore+1})
+            this.setState({computerScore: this.state.computerScore+finalArray.length})
             this.setState({computerStatement: "I found a group."})
             console.log("found a group!!!!!!! 1")
             computerdrawarray.push("found")
@@ -260,7 +264,7 @@ class PlayingField extends React.Component {
               this.addApprovedCardGroup(straight)
               this.removeGroupFromComputerHand(straight)
               this.addStraightGroup(straight)
-              this.setState({computerScore: this.state.computerScore+1})
+              this.setState({computerScore: this.state.computerScore+straight.length})
               this.setState({computerStatement: "I found a group."})
               console.log("found a group!!!!!!! 2")
               computerdrawarray.push("found")
@@ -270,19 +274,28 @@ class PlayingField extends React.Component {
       }
     }
 
-    let allCommonCardGroups = this.state.cardGroups
-    let firstStraightCards = []
-    let lastStraightCards = []
-    let firstColorCards = []
-    let lastColorCards = []
-    allCommonCardGroups.forEach(group=>{
-
-
-    })
-
-
-
-
+    // let allColorGroups = this.state.colorGroups
+    // let allComputerCards = this.state.computerCards
+    //
+    // allColorGroups.forEach(group=>{
+    //   if group.length < 4 {
+    //     allComputerCards.forEach(card=>{
+    //
+    //
+    //     })
+    //
+    //   }
+    // }
+    // )
+    //
+    // let allStaightGroups = this.state.straightGroups
+    // let firstStraightCards = []
+    // let lastStraightCards = []
+    //
+    // allStaightGroups.forEach(group=>{
+    //   firstStraightCards.push(group[0])
+    //   lastStraightCards.push(group[group.length-1])
+    // })
 
     this.computerDrawCard()
   }
@@ -351,6 +364,7 @@ class PlayingField extends React.Component {
           let newColorGroup = this.state.colorGroups.filter(group=> group !== cardGroup)
           this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
           this.setState({colorGroups: newColorGroup.concat([newCardGroup])})
+          this.setState({playerScore: this.state.playerScore+1})
           this.removeCardFromPlayerHand(card)
           this.setState({playerCardGroup: []})
         }
@@ -363,6 +377,7 @@ class PlayingField extends React.Component {
           let newStraightGroup = this.state.straightGroups.filter(group=> group !== cardGroup)
           this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
           this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
+          this.setState({playerScore: this.state.playerScore+1})
           this.removeCardFromPlayerHand(card)
           this.setState({playerCardGroup: []})
         }
@@ -374,6 +389,7 @@ class PlayingField extends React.Component {
           let newCommonCardGroups = this.state.cardGroups
           this.setState({cardGroups: newCommonCardGroups})
           this.setState({straightGroups: newStraightGroup.concat([cardGroup])})
+          this.setState({playerScore: this.state.playerScore+1})
           this.removeCardFromPlayerHand(card)
           this.setState({playerCardGroup: []})
         }
