@@ -291,7 +291,7 @@ class PlayingField extends React.Component {
     let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
     if (this.state.playerCardGroup[0]){
     let selectedCard = this.state.playerCardGroup[0]
-    if (commonCardGroup[0].color === commonCardGroup[1].color) {
+    if (commonCardGroup[0].color === commonCardGroup[1].color && commonCardGroup[0].color === selectedCard.color) {
       if (selectedCard.number === commonCardGroup[commonCardGroup.length - 1].number +1) {
         this.updateStraightCardGroupLast(commonCardGroup, selectedCard)
         this.toggleDoneButton(false)
@@ -329,26 +329,27 @@ class PlayingField extends React.Component {
     let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
     this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
     this.removeCardFromPlayerHand(card)
+    this.setState({playerCardGroup: []})
   }
 
   updateStraightCardGroupLast = (cardGroup, card) => {
     let newCardGroup = cardGroup.concat(card)
     console.log(cardGroup)
     console.log(newCardGroup)
-    debugger
-    let newCommonCardGroups = this.state.cardGroups
-    this.setState({cardGroups: newCommonCardGroups})
+    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
     this.removeCardFromPlayerHand(card)
+    this.setState({playerCardGroup: []})
   }
 
   updateStraightCardGroupFirst = (cardGroup, card) => {
     let newCardGroup = cardGroup.unshift(card)
     console.log(cardGroup)
     console.log(newCardGroup)
-    debugger
     let newCommonCardGroups = this.state.cardGroups
     this.setState({cardGroups: newCommonCardGroups})
     this.removeCardFromPlayerHand(card)
+    this.setState({playerCardGroup: []})
   }
 
   onHoverOfCard = (card) => {
