@@ -265,6 +265,10 @@ class PlayingField extends React.Component {
   }
 
   computerDrawCard = () => {
+    if (_.isEmpty(this.state.remainingCards)) {
+      this.toggleDrawButton(true)
+      console.log("no more cards in deck")
+    } else {
     if (!computerdrawarray.includes("found")) {
       console.log('computer draws a card')
       this.drawCardForComputer()
@@ -273,18 +277,69 @@ class PlayingField extends React.Component {
       this.setState({computerStatement: "I submitted my groups. Your turn."})
     }
     this.toggleDoneButton(true)
-    this.toggleDrawButton(false)
+    this.toggleDrawButton(false)}
   }
 
   handleClickOfCommonCard = (card) =>{
     console.log("yooooooooo")
-    console.log(this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0])
+    let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
+    if (this.state.playerCardGroup[0]){
+    let selectedCard = this.state.playerCardGroup[0]
+    if (commonCardGroup[0].color === commonCardGroup[1].color) {
+      if (selectedCard.number === commonCardGroup[commonCardGroup.length - 1].number +1) {
+        this.updateStraightCardGroupLast(commonCardGroup, selectedCard)
+        this.toggleDoneButton(false)
+        this.toggleDrawButton(true)
+      } else if (selectedCard.number === commonCardGroup[0].number -1) {
+        this.updateStraightCardGroupFirst(commonCardGroup, selectedCard)
+        this.toggleDoneButton(false)
+        this.toggleDrawButton(true)
+      }
+    } else {
+      if (commonCardGroup.length < 4) {
+        if (selectedCard.number === commonCardGroup[0].number) {
+          let cardColors = commonCardGroup.map(card=> card.color)
+          if (!cardColors.includes(selectedCard.color)) {
+            this.updateColorCardGroup(commonCardGroup, selectedCard)
+            this.toggleDoneButton(false)
+            this.toggleDrawButton(true)
+          }
+        }
+      }
+    }}
+
+    console.log()
     // if all same color
     //if you have a card that is +1 last card or -1 last card
     //add your card to that group and remove that card from your hand
     //if different colors if group is less than 4
     //if a mapped array of the cards color does not include card of the same number, different color
     // add that color to the group and remove from your hand
+
+  }
+
+  updateColorCardGroup = (cardGroup, card) => {
+    let newCardGroup = cardGroup.concat(card)
+    console.log(cardGroup)
+    console.log(newCardGroup)
+    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+  }
+
+  updateStraightCardGroupLast = (cardGroup, card) => {
+    let newCardGroup = cardGroup.concat(card)
+    console.log(cardGroup)
+    console.log(newCardGroup)
+    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+  }
+
+  updateStraightCardGroupFirst = (cardGroup, card) => {
+    let newCardGroup = cardGroup.unshift(card)
+    console.log(cardGroup)
+    console.log(newCardGroup)
+    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
   }
 
   onHoverOfCard = (card) => {
