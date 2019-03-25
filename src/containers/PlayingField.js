@@ -298,42 +298,88 @@ class PlayingField extends React.Component {
   )
 
 
-  this.addToStraightGroupComputer()
+  this.addToStraightGroupFirstComputer()
+  this.addToStraightGroupLastComputer()
   this.computerDrawCard()
 }
 
-addToStraightGroupComputer = () => {
-    let computerCards = this.unique(this.state.computerCards)
-    let allStraightGroups = this.state.straightGroups
-    let firstStraightCards = []
-    let lastStraightCards = []
-    allStraightGroups.forEach(group=>{
-      firstStraightCards.push(group[0])
-      lastStraightCards.push(group[group.length-1])
+addToStraightGroupFirstComputer = () => {
+  let computerCards = this.uniqueByColorAndNumber(this.state.computerCards)
+  let allStraightGroups = this.state.straightGroups
+  let firstStraightCards = []
+  allStraightGroups.forEach(group=>{
+    firstStraightCards.push(group[0])
+  })
+  firstStraightCards.forEach(firstCard => {
+    computerCards.forEach(computerCard => {
+      console.log("first card", firstCard)
+      console.log("computer card color", computerCard.color)
+      console.log("first card color", firstCard.color)
+      console.log("computer card number", computerCard.number)
+      console.log("first card number", firstCard.number)
+      if (computerCard.color === firstCard.color && computerCard.number === firstCard.number - 1) {
+        console.log("adding to beg of straight group")
+        let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
+        this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
+        computerdrawarray.push("found")
+        this.addToStraightGroupFirstComputer()
+      }
     })
-    firstStraightCards.forEach(firstCard => {
-      computerCards.forEach(computerCard => {
-        console.log("first card", firstCard)
-        if (computerCard.color === firstCard.color && computerCard.number === firstCard.number - 1) {
-          let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
-          this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
-          computerdrawarray.push("found")
-          this.addToStraightGroupComputer()
-        }
-      })
-    })
-      lastStraightCards.forEach(lastCard => {
-      computerCards.forEach(computerCard => {
-        console.log("last card", lastCard)
-        if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
-          let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
-          this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
-          computerdrawarray.push("found")
-          this.addToStraightGroupComputer()
-        }
-      })
-    })
+  })
 }
+
+addToStraightGroupLastComputer = () => {
+  let computerCards = this.uniqueByColorAndNumber(this.state.computerCards)
+  let allStraightGroups = this.state.straightGroups
+  let lastStraightCards = []
+  allStraightGroups.forEach(group=>{
+    lastStraightCards.push(group[group.length-1])
+  })
+  lastStraightCards.forEach(lastCard => {
+  computerCards.forEach(computerCard => {
+    console.log("last card", lastCard)
+    if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
+      let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
+      this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
+      computerdrawarray.push("found")
+      this.addToStraightGroupLastComputer()
+    }
+  })
+})
+}
+
+// addToStraightGroupComputer = () => {
+//     let computerCards = this.unique(this.state.computerCards)
+//     let allStraightGroups = this.state.straightGroups
+//     let firstStraightCards = []
+//     let lastStraightCards = []
+//     allStraightGroups.forEach(group=>{
+//       firstStraightCards.push(group[0])
+//       lastStraightCards.push(group[group.length-1])
+//     })
+//     firstStraightCards.forEach(firstCard => {
+//       computerCards.forEach(computerCard => {
+//         console.log("first card", firstCard)
+//         if (computerCard.color === firstCard.color && computerCard.number === firstCard.number - 1) {
+//           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
+//           this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
+//           computerdrawarray.push("found")
+//           this.addToStraightGroupComputer()
+//         }
+//       })
+//     })
+//       lastStraightCards.forEach(lastCard => {
+//       computerCards.forEach(computerCard => {
+//         console.log("last card", lastCard)
+//         if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
+//           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
+//           this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
+//           computerdrawarray.push("found")
+//           this.addToStraightGroupComputer()
+//         }
+//       })
+//     })
+// }
 
 updateStraightCardGroupFirstComputer = (commonCardGroup, computerCard) => {
   let newStraightGroups = this.state.straightGroups.filter(group=> group !== commonCardGroup)
@@ -367,6 +413,17 @@ unique = (array) => {
     })
     return newArray
   }
+
+  uniqueByColorAndNumber = (array) => {
+    let storage = []
+    let newArray = []
+    array.forEach(card=>
+      {if (!storage.includes(card.number+card.color)) {
+        storage.push(card.number+card.color)
+        newArray.push(card)}
+      })
+      return newArray
+    }
 
   computerDrawCard = () => {
     if (_.isEmpty(this.state.remainingCards)) {
