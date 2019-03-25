@@ -17,6 +17,8 @@ class PlayingField extends React.Component {
       playerCardGroup: [],
       approvedCardGroup: [],
       cardGroups: [],
+      straightGroups: [],
+      colorGroups: [],
       playerScore: 0,
       computerScore: 0,
       computerStatement: "Hi, I'm Rummi. Let's play a game. You start."
@@ -25,9 +27,21 @@ class PlayingField extends React.Component {
 
   addApprovedCardGroup = (cards) => {
     if (!this.state.cardGroups.includes(cards)) {
-    this.setState({cardGroups: [...this.state.cardGroups, cards] })
+      this.setState({cardGroups: [...this.state.cardGroups, cards] })
+    }
+    console.log("card groups",this.state.cardGroups)
   }
-      console.log("card groups",this.state.cardGroups)
+
+  addStraightGroup = (cards) => {
+    if (!this.state.straightGroups.includes(cards)) {
+      this.setState({straightGroups: [...this.state.straightGroups, cards] })
+    }
+  }
+
+  addColorGroup = (cards) => {
+    if (!this.state.colorGroups.includes(cards)) {
+      this.setState({colorGroups: [...this.state.colorGroups, cards] })
+    }
   }
 
   clearGroup = () => {
@@ -111,6 +125,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.addStraightGroup(group)
           this.toggleDoneButton(false)
           this.toggleDrawButton(true)
           this.setState({playerScore: this.state.playerScore+1})
@@ -130,6 +145,7 @@ class PlayingField extends React.Component {
           this.setState({approvedCardGroup: group})
           this.removeGroupFromPlayerHand(group)
           this.addApprovedCardGroup(group)
+          this.addColorGroup(group)
           this.toggleDoneButton(false)
           this.toggleDrawButton(true)
           this.setState({playerScore: this.state.playerScore+1})
@@ -174,88 +190,100 @@ class PlayingField extends React.Component {
     computerdrawarray = []
     console.log("it's my turn now mwahaha - computer")
     this.setState({computerStatement: "It's my turn now."})
-    // grab computer cards
     let computerCards = this.state.computerCards
     let byNumber = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[],13:[]}
     computerCards.forEach(card=> byNumber[card.number] = [...byNumber[card.number],card])
     let colorArray
     for (const key in byNumber) {
-      // make unique by color but pass card through
       if (byNumber[key].length >= 3) {
         colorArray = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
         byNumber[key].forEach(card =>
           {if (_.isEmpty(colorArray[card.color])) {colorArray[card.color].push(card)}})
-        let finalArray = []
-        for (const color in colorArray) {
-          console.log(colorArray)
-          colorArray[color].forEach(card => finalArray.push(card))
-        }
-        if (finalArray.length >= 3) {
-          this.addApprovedCardGroup(finalArray)
-          this.removeGroupFromComputerHand(finalArray)
-          this.setState({computerScore: this.state.computerScore+1})
-          this.setState({computerStatement: "I found a group."})
-          console.log("found a group!!!!!!! 1")
-          computerdrawarray.push("found")
-        } else {
-          console.log("found no group 1a")
-      }
-    }  else {
-      console.log("found no group 1b")
-  }
-    let remainingComputerCards = this.state.computerCards
-    let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
-    remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
-
-    for (const color in byColor) {
-      byColor[color].sort((a, b) => a.number - b.number)
-      byColor[color] = this.unique(byColor[color])
-      console.log("sorted and uniq group",byColor[color])
-    }
-
-    for (const color in byColor) {
-      let k = byColor[color][0] - 1
-      let straightGroup = []
-      let straightGroupArray = []
-      for (let i=0; i<byColor[color].length; i++) {
-      if (byColor[color][i].number === k + 1) {
-          straightGroup.push(byColor[color][i])
-          k = byColor[color][i].number
-  		if (i === byColor[color].length - 1 && straightGroup.length >= 3) {
-  			straightGroupArray.push(straightGroup)
+          let finalArray = []
+          for (const color in colorArray) {
+            console.log(colorArray)
+            colorArray[color].forEach(card => finalArray.push(card))
           }
-      } else {
-          if (straightGroup.length >= 3) {
-              straightGroupArray.push(straightGroup)
-              k = byColor[color][i].number
-  			straightGroup = []
-              straightGroup.push(byColor[color][i])
+          if (finalArray.length >= 3) {
+            this.addApprovedCardGroup(finalArray)
+            this.removeGroupFromComputerHand(finalArray)
+            this.addColorGroup(finalArray)
+            this.setState({computerScore: this.state.computerScore+1})
+            this.setState({computerStatement: "I found a group."})
+            console.log("found a group!!!!!!! 1")
+            computerdrawarray.push("found")
           } else {
-              k = byColor[color][i].number
-              straightGroup = []
-              straightGroup.push(byColor[color][i])
+            console.log("found no group 1a")
           }
-      }
-  }
+        }  else {
+          console.log("found no group 1b")
+        }
+        let remainingComputerCards = this.state.computerCards
+        let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
+        remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
 
-      if (!_.isEmpty(straightGroupArray)) {
-        console.log("step 4")
+        for (const color in byColor) {
+          byColor[color].sort((a, b) => a.number - b.number)
+          byColor[color] = this.unique(byColor[color])
+          console.log("sorted and uniq group",byColor[color])
+        }
+        for (const color in byColor) {
+          let k = byColor[color][0] - 1
+          let straightGroup = []
+          let straightGroupArray = []
+          for (let i=0; i<byColor[color].length; i++) {
+            if (byColor[color][i].number === k + 1) {
+              straightGroup.push(byColor[color][i])
+              k = byColor[color][i].number
+              if (i === byColor[color].length - 1 && straightGroup.length >= 3) {
+                straightGroupArray.push(straightGroup)
+              }
+            } else {
+              if (straightGroup.length >= 3) {
+                straightGroupArray.push(straightGroup)
+                k = byColor[color][i].number
+                straightGroup = []
+                straightGroup.push(byColor[color][i])
+              } else {
+                k = byColor[color][i].number
+                straightGroup = []
+                straightGroup.push(byColor[color][i])
+              }
+            }
+          }
 
-        straightGroupArray.forEach(straight => {
-          console.log("step 5")
+          if (!_.isEmpty(straightGroupArray)) {
+            console.log("step 4")
 
-          this.addApprovedCardGroup(straight)
-           this.removeGroupFromComputerHand(straight)
-           this.setState({computerScore: this.state.computerScore+1})
-           this.setState({computerStatement: "I found a group."})
-           console.log("found a group!!!!!!! 2")
-           computerdrawarray.push("found")
-         }
-        )
+            straightGroupArray.forEach(straight => {
+              console.log("step 5")
+              this.addApprovedCardGroup(straight)
+              this.removeGroupFromComputerHand(straight)
+              this.addStraightGroup(straight)
+              this.setState({computerScore: this.state.computerScore+1})
+              this.setState({computerStatement: "I found a group."})
+              console.log("found a group!!!!!!! 2")
+              computerdrawarray.push("found")
+            }
+          )
+        }
       }
     }
 
-    }
+    let allCommonCardGroups = this.state.cardGroups
+    let firstStraightCards = []
+    let lastStraightCards = []
+    let firstColorCards = []
+    let lastColorCards = []
+    allCommonCardGroups.forEach(group=>{
+
+
+    })
+
+
+
+
+
     this.computerDrawCard()
   }
 
@@ -263,136 +291,134 @@ class PlayingField extends React.Component {
     let storage = []
     let newArray = []
     array.forEach(card=>
-    {if (!storage.includes(card.number)) {
-    storage.push(card.number)
-    newArray.push(card)}
-    })
-    return newArray
-  }
-
-  computerDrawCard = () => {
-    if (_.isEmpty(this.state.remainingCards)) {
-      this.toggleDrawButton(true)
-      console.log("no more cards in deck")
-    } else {
-    if (!computerdrawarray.includes("found")) {
-      console.log('computer draws a card')
-      this.drawCardForComputer()
-    } else {
-      console.log('computer does not need to draw a card')
-      this.setState({computerStatement: "I submitted my groups. Your turn."})
+      {if (!storage.includes(card.number)) {
+        storage.push(card.number)
+        newArray.push(card)}
+      })
+      return newArray
     }
-    this.toggleDoneButton(true)
-    this.toggleDrawButton(false)}
-  }
 
-  handleClickOfCommonCard = (card) =>{
-    console.log("yooooooooo")
-    let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
-    if (this.state.playerCardGroup[0]){
-    let selectedCard = this.state.playerCardGroup[0]
-    if (commonCardGroup[0].color === commonCardGroup[1].color && commonCardGroup[0].color === selectedCard.color) {
-      if (selectedCard.number === commonCardGroup[commonCardGroup.length - 1].number +1) {
-        this.updateStraightCardGroupLast(commonCardGroup, selectedCard)
-        this.toggleDoneButton(false)
+    computerDrawCard = () => {
+      if (_.isEmpty(this.state.remainingCards)) {
         this.toggleDrawButton(true)
-      } else if (selectedCard.number === commonCardGroup[0].number -1) {
-        this.updateStraightCardGroupFirst(commonCardGroup, selectedCard)
-        this.toggleDoneButton(false)
-        this.toggleDrawButton(true)
+        console.log("no more cards in deck")
+      } else {
+        if (!computerdrawarray.includes("found")) {
+          console.log('computer draws a card')
+          this.drawCardForComputer()
+        } else {
+          console.log('computer does not need to draw a card')
+          this.setState({computerStatement: "I submitted my groups. Your turn."})
+        }
+        this.toggleDoneButton(true)
+        this.toggleDrawButton(false)}
       }
-    } else {
-      if (commonCardGroup.length < 4) {
-        if (selectedCard.number === commonCardGroup[0].number) {
-          let cardColors = commonCardGroup.map(card=> card.color)
-          if (!cardColors.includes(selectedCard.color)) {
-            this.updateColorCardGroup(commonCardGroup, selectedCard)
-            this.toggleDoneButton(false)
-            this.toggleDrawButton(true)
-          }
+
+      handleClickOfCommonCard = (card) =>{
+        console.log("yooooooooo")
+        let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
+        if (this.state.playerCardGroup[0]){
+          let selectedCard = this.state.playerCardGroup[0]
+          if (commonCardGroup[0].color === commonCardGroup[1].color && commonCardGroup[0].color === selectedCard.color) {
+            if (selectedCard.number === commonCardGroup[commonCardGroup.length - 1].number +1) {
+              this.updateStraightCardGroupLast(commonCardGroup, selectedCard)
+              this.toggleDoneButton(false)
+              this.toggleDrawButton(true)
+            } else if (selectedCard.number === commonCardGroup[0].number -1) {
+              this.updateStraightCardGroupFirst(commonCardGroup, selectedCard)
+              this.toggleDoneButton(false)
+              this.toggleDrawButton(true)
+            }
+          } else {
+            if (commonCardGroup.length < 4) {
+              if (selectedCard.number === commonCardGroup[0].number) {
+                let cardColors = commonCardGroup.map(card=> card.color)
+                if (!cardColors.includes(selectedCard.color)) {
+                  this.updateColorCardGroup(commonCardGroup, selectedCard)
+                  this.toggleDoneButton(false)
+                  this.toggleDrawButton(true)
+                }
+              }
+            }
+          }}
+        }
+
+        updateColorCardGroup = (cardGroup, card) => {
+          let newCardGroup = cardGroup.concat(card)
+          console.log(cardGroup)
+          console.log(newCardGroup)
+          let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+          let newColorGroup = this.state.colorGroups.filter(group=> group !== cardGroup)
+          this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+          this.setState({colorGroups: newColorGroup.concat([newCardGroup])})
+          this.removeCardFromPlayerHand(card)
+          this.setState({playerCardGroup: []})
+        }
+
+        updateStraightCardGroupLast = (cardGroup, card) => {
+          let newCardGroup = cardGroup.concat(card)
+          console.log(cardGroup)
+          console.log(newCardGroup)
+          let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
+          let newStraightGroup = this.state.straightGroups.filter(group=> group !== cardGroup)
+          this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+          this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
+          this.removeCardFromPlayerHand(card)
+          this.setState({playerCardGroup: []})
+        }
+
+        updateStraightCardGroupFirst = (cardGroup, card) => {
+          let newStraightGroup = this.state.straightGroups.filter(group=> group !== cardGroup)
+          cardGroup.unshift(card)
+          console.log(cardGroup)
+          let newCommonCardGroups = this.state.cardGroups
+          this.setState({cardGroups: newCommonCardGroups})
+          this.setState({straightGroups: newStraightGroup.concat([cardGroup])})
+          this.removeCardFromPlayerHand(card)
+          this.setState({playerCardGroup: []})
+        }
+
+        onHoverOfCard = (card) => {
+          // find all cards of this color
+          // make them "glow"
+          // console.log(card)
+          // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
+          // }
+        }
+
+
+        render() {
+          return (
+            <>
+            <div className="ui vertically divided grid board">
+            <ScoreBoard
+            computerScore={this.state.computerScore}
+            playerScore={this.state.playerScore}
+            computerStatement={this.state.computerStatement}
+            playerCardGroup={this.state.playerCardGroup}
+            />
+            <ComputerContainer
+            computerCards={this.state.computerCards}
+            />
+            <CommonContainer
+            cardGroups={this.state.cardGroups}
+            onClickOfCard={this.handleClickOfCommonCard}
+            />
+            <PlayerContainer
+            playerCards={this.state.playerCards}
+            onClickOfCard={this.handleClickOfCard}
+            onHoverOfCard={this.onHoverOfCard}
+            />
+            <Button
+            onClickOfCheck={this.handleClickOfCheck}
+            onClickOfClear={this.clearGroup}
+            onClickOfDone={this.handleClickOfDone}
+            onClickOfDraw={this.handleClickOfDraw}
+            />
+            </div>
+            </>
+          )
         }
       }
-    }}
-    // if all same color
-    //if you have a card that is +1 last card or -1 last card
-    //add your card to that group and remove that card from your hand
-    //if different colors if group is less than 4
-    //if a mapped array of the cards color does not include card of the same number, different color
-    // add that color to the group and remove from your hand
 
-  }
-
-  updateColorCardGroup = (cardGroup, card) => {
-    let newCardGroup = cardGroup.concat(card)
-    console.log(cardGroup)
-    console.log(newCardGroup)
-    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
-    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
-    this.removeCardFromPlayerHand(card)
-    this.setState({playerCardGroup: []})
-  }
-
-  updateStraightCardGroupLast = (cardGroup, card) => {
-    let newCardGroup = cardGroup.concat(card)
-    console.log(cardGroup)
-    console.log(newCardGroup)
-    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
-    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
-    this.removeCardFromPlayerHand(card)
-    this.setState({playerCardGroup: []})
-  }
-
-  updateStraightCardGroupFirst = (cardGroup, card) => {
-    let newCardGroup = cardGroup.unshift(card)
-    console.log(cardGroup)
-    console.log(newCardGroup)
-    let newCommonCardGroups = this.state.cardGroups
-    this.setState({cardGroups: newCommonCardGroups})
-    this.removeCardFromPlayerHand(card)
-    this.setState({playerCardGroup: []})
-  }
-
-  onHoverOfCard = (card) => {
-    // find all cards of this color
-    // make them "glow"
-    // console.log(card)
-    // this.playerCards.forEach(playerCard=>playerCard.color===card.color) {
-    // }
-  }
-
-
-  render() {
-    return (
-      <>
-      <div className="ui vertically divided grid board">
-      <ScoreBoard
-      computerScore={this.state.computerScore}
-      playerScore={this.state.playerScore}
-      computerStatement={this.state.computerStatement}
-      playerCardGroup={this.state.playerCardGroup}
-      />
-      <ComputerContainer
-      computerCards={this.state.computerCards}
-      />
-      <CommonContainer
-      cardGroups={this.state.cardGroups}
-      onClickOfCard={this.handleClickOfCommonCard}
-      />
-      <PlayerContainer
-      playerCards={this.state.playerCards}
-      onClickOfCard={this.handleClickOfCard}
-      onHoverOfCard={this.onHoverOfCard}
-      />
-      <Button
-      onClickOfCheck={this.handleClickOfCheck}
-      onClickOfClear={this.clearGroup}
-      onClickOfDone={this.handleClickOfDone}
-      onClickOfDraw={this.handleClickOfDraw}
-      />
-      </div>
-      </>
-    )
-  }
-}
-
-export default PlayingField
+      export default PlayingField
