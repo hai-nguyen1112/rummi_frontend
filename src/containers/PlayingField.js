@@ -40,6 +40,12 @@ class PlayingField extends React.Component {
     this.setState({playerCards: arr})
   }
 
+  removeCardFromPlayerHand = (card) => {
+    let arr = this.state.playerCards
+    arr = arr.filter(c => c != card)
+    this.setState({playerCards: arr})
+  }
+
   removeGroupFromComputerHand = (group) => {
     let arr = this.state.computerCards
     arr = arr.filter(card => !group.includes(card))
@@ -307,8 +313,6 @@ class PlayingField extends React.Component {
         }
       }
     }}
-
-    console.log()
     // if all same color
     //if you have a card that is +1 last card or -1 last card
     //add your card to that group and remove that card from your hand
@@ -324,22 +328,27 @@ class PlayingField extends React.Component {
     console.log(newCardGroup)
     let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
     this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+    this.removeCardFromPlayerHand(card)
   }
 
   updateStraightCardGroupLast = (cardGroup, card) => {
     let newCardGroup = cardGroup.concat(card)
     console.log(cardGroup)
     console.log(newCardGroup)
-    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
-    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+    debugger
+    let newCommonCardGroups = this.state.cardGroups
+    this.setState({cardGroups: newCommonCardGroups})
+    this.removeCardFromPlayerHand(card)
   }
 
   updateStraightCardGroupFirst = (cardGroup, card) => {
     let newCardGroup = cardGroup.unshift(card)
     console.log(cardGroup)
     console.log(newCardGroup)
-    let newCommonCardGroups = this.state.cardGroups.filter(group=> group !== cardGroup)
-    this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
+    debugger
+    let newCommonCardGroups = this.state.cardGroups
+    this.setState({cardGroups: newCommonCardGroups})
+    this.removeCardFromPlayerHand(card)
   }
 
   onHoverOfCard = (card) => {
