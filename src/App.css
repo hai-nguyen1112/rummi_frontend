@@ -41,14 +41,14 @@
 
 #highlight {
   border-style: solid;
-  border-color: lightblue;
+  border-color: #9DB68C;
   border-width: 5px;
 }
 
 
 #highlight1 {
   border-style: solid;
-  border-color: lightblue;
+  border-color: #9DB68C;
   border-width: 5px;
 }
 
@@ -152,6 +152,7 @@
   height: 35rem;
   width: 60rem;
   overflow: auto;
+  padding: 10px;
 }
 
 .item4 {
@@ -237,11 +238,16 @@ div .content {
 }
 
 .rulesImage {
+  margin-top: -30px;
 width: 70%;
 }
 
 .logoImage {
-width: 70%;
+width: 85%;
+}
+
+.rummiImage {
+width: 60%;
 }
 
 #playButton {
@@ -266,6 +272,9 @@ border-radius: 8px;
 #rummisays {
   background-color: #cbe8c9;
   color: black;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  line-height: 1.5em;
 }
 
 .state {
@@ -279,3 +288,30 @@ border-radius: 8px;
    justify-content: center;
    align-items: center;
   }
+
+  #playRummi {
+    margin-top: -30px;
+    width: 30%;
+  }
+
+#homeButtons {
+  margin-top: 30px;
+}
+
+#playerHand {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #cbe8c9;
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+#statsHand {
+  margin-top: 10px;
+  font-family: 'Baloo Chettan', cursive;
+  font-size: 25px;
+}
+
+#score {
+  font-family: 'Baloo Chettan', cursive;
+}

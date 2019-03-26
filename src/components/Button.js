@@ -11,7 +11,7 @@ const Button = props => {
     <div className="or"></div>
     <button className={"ui button"} id={"clearButton"} data-tooltip="Accidentally clicked the wrong card? Clear your current group and start over." data-position="top left" onClick={props.onClickOfClear}>Clear Group</button>
     <div className="or"></div>
-    <button className={"ui button"} id={"doneButton"} data-tooltip="Once you've submitted your groups, click 'I'm done.'" data-position="top left" onClick={props.onClickOfDone}>I'm done. Computer's turn!</button>
+    <button className={"ui button"} id={"doneButton"} data-tooltip="Once you've submitted your groups, click I'm done." data-position="top left" onClick={props.onClickOfDone}>I'm done. Computer's turn!</button>
     <div className="or"></div>
     <button className={"ui button"} id={"drawButton"} data-tooltip="If you can't make a move, skip your turn by drawing a card." data-position="top left" onClick={props.onClickOfDraw}>Draw Card</button>
     <div className="or"></div>

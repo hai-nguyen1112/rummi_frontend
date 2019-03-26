@@ -18,25 +18,25 @@ const ScoreBoard = props => {
        </div>
     </div>
     <div className="grid-item item7">
-      <p>
+      <p id="playerHand">
         Player Hand
       </p>
     </div>
     <div className="grid-item item1" id="scoreheader">
     <div className="ui statistics" id="stats">
       <div className="statistic">
-        <div className="value">
+        <div className="value" id="score">
           {props.computerScore}
         </div>
-        <div className="label">
+        <div className="label" id="statsHand">
           Computer Score
         </div>
       </div>
       <div className="statistic">
-        <div className="value">
+        <div className="value" id="score">
         {props.playerScore}
         </div>
-        <div className="label">
+        <div className="label" id="statsHand">
         Player Score
         </div>
       </div>

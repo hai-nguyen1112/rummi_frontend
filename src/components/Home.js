@@ -7,7 +7,8 @@ const Home = () => {
     <div className="ui inverted vertical masthead center aligned segment" id="hey">
     <div className="ui text container">
     <img className="logoImage" src={require("../images/logo.png")} />
-    <div className="ui huge buttons">
+    <img className="rummiImage" src={require('../images/rummi.png')} />
+    <div className="ui huge buttons" id="homeButtons">
     <Link to={`/instructions`}>
     <div className="ui button" id="instructionsButton">
     Instructions

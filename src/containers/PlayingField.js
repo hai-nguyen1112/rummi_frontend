@@ -176,11 +176,12 @@ class PlayingField extends React.Component {
   handleClickOfDone = () => {
     if (!this.checkScore()) {
       this.setState({computerStatement: "My turn."})
-      setTimeout(this.computerTurn,1000)
+      setTimeout(this.computerTurn,500)
     } else {
       this.toggleDoneButton(true)
       this.toggleDrawButton(true)
       document.getElementById("checkButton").disabled = true
+      document.getElementById("sortButton").disabled = true
       document.getElementById("clearButton").disabled = true
     }
   }
@@ -189,7 +190,7 @@ class PlayingField extends React.Component {
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({playerCards: [...this.state.playerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
     this.setState({computerStatement: "My turn."})
-    setTimeout(this.computerTurn,1000)
+    setTimeout(this.computerTurn,500)
   }
 
   drawCardForComputer = () => {
@@ -211,8 +212,6 @@ class PlayingField extends React.Component {
 
   computerTurn = () => {
     computerdrawarray = []
-    console.log("it's my turn now mwahaha - computer")
-    this.setState({computerStatement: "It's my turn now."})
     let computerCards = this.state.computerCards
     let byNumber = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[],13:[]}
     computerCards.forEach(card=> byNumber[card.number] = [...byNumber[card.number],card])
@@ -241,55 +240,59 @@ class PlayingField extends React.Component {
         }  else {
           console.log("found no group 1b")
         }
-        let remainingComputerCards = this.state.computerCards
-        let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
-        remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
+      }
+      setTimeout(this.nextPartComputerTurn, 500)
+    }
 
-        for (const color in byColor) {
-          byColor[color].sort((a, b) => a.number - b.number)
-          byColor[color] = this.unique(byColor[color])
-          console.log("sorted and uniq group",byColor[color])
-        }
-        for (const color in byColor) {
-          let k = byColor[color][0] - 1
-          let straightGroup = []
-          let straightGroupArray = []
-          for (let i=0; i<byColor[color].length; i++) {
-            if (byColor[color][i].number === k + 1) {
-              straightGroup.push(byColor[color][i])
+    nextPartComputerTurn = () => {
+      let remainingComputerCards = this.state.computerCards
+      let byColor = {"#E41414":[], "#FF8C00":[], "#0000FF":[],"#000000":[]}
+      remainingComputerCards.forEach(card=> byColor[card.color] = [...byColor[card.color],card])
+
+      for (const color in byColor) {
+        byColor[color].sort((a, b) => a.number - b.number)
+        byColor[color] = this.unique(byColor[color])
+        console.log("sorted and uniq group",byColor[color])
+      }
+      for (const color in byColor) {
+        let k = byColor[color][0] - 1
+        let straightGroup = []
+        let straightGroupArray = []
+        for (let i=0; i<byColor[color].length; i++) {
+          if (byColor[color][i].number === k + 1) {
+            straightGroup.push(byColor[color][i])
+            k = byColor[color][i].number
+            if (i === byColor[color].length - 1 && straightGroup.length >= 3) {
+              straightGroupArray.push(straightGroup)
+            }
+          } else {
+            if (straightGroup.length >= 3) {
+              straightGroupArray.push(straightGroup)
               k = byColor[color][i].number
-              if (i === byColor[color].length - 1 && straightGroup.length >= 3) {
-                straightGroupArray.push(straightGroup)
-              }
+              straightGroup = []
+              straightGroup.push(byColor[color][i])
             } else {
-              if (straightGroup.length >= 3) {
-                straightGroupArray.push(straightGroup)
-                k = byColor[color][i].number
-                straightGroup = []
-                straightGroup.push(byColor[color][i])
-              } else {
-                k = byColor[color][i].number
-                straightGroup = []
-                straightGroup.push(byColor[color][i])
-              }
+              k = byColor[color][i].number
+              straightGroup = []
+              straightGroup.push(byColor[color][i])
             }
           }
-
-          if (!_.isEmpty(straightGroupArray)) {
-            console.log("step 4")
-
-            straightGroupArray.forEach(straight => {
-              console.log("step 5")
-              this.addApprovedCardGroup(straight)
-              this.removeGroupFromComputerHand(straight)
-              this.addStraightGroup(straight)
-              this.setState({computerScore: this.state.computerScore+straight.length})
-              this.setState({computerStatement: "I found a group."})
-              console.log("found a group!!!!!!! 2")
-              computerdrawarray.push("found")
-            }
-          )
         }
+
+        if (!_.isEmpty(straightGroupArray)) {
+          console.log("step 4")
+
+          straightGroupArray.forEach(straight => {
+            console.log("step 5")
+            this.addApprovedCardGroup(straight)
+            this.removeGroupFromComputerHand(straight)
+            this.addStraightGroup(straight)
+            this.setState({computerScore: this.state.computerScore+straight.length})
+            this.setState({computerStatement: "I found a group."})
+            console.log("found a group!!!!!!! 2")
+            computerdrawarray.push("found")
+          }
+        )
       }
     }
 
@@ -310,15 +313,20 @@ class PlayingField extends React.Component {
     }
   )
 
-  this.addToStraightGroupFirstComputer()
-  this.addToStraightGroupLastComputer()
-  if (!this.checkScore()) {
-    this.computerDrawCard()} else {
-      this.toggleDoneButton(true)
-      this.toggleDrawButton(true)
-      document.getElementById("checkButton").disabled = true
-      document.getElementById("clearButton").disabled = true
-    }
+  setTimeout(this.addToStraightGroupFirstComputer, 500)
+  setTimeout(this.addToStraightGroupLastComputer, 500)
+  setTimeout(this.shouldComputerDraw, 500)
+  }
+
+  shouldComputerDraw = () => {
+    if (!this.checkScore()) {
+      this.computerDrawCard()} else {
+        this.toggleDoneButton(true)
+        this.toggleDrawButton(true)
+        document.getElementById("checkButton").disabled = true
+        document.getElementById("clearButton").disabled = true
+        document.getElementById("sortButton").disabled = true
+      }
   }
 
   addToStraightGroupFirstComputer = () => {
@@ -340,7 +348,8 @@ class PlayingField extends React.Component {
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
           this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
-          setTimeout(this.addToStraightGroupFirstComputer,1500)
+          this.setState({computerStatement: "Added a card. Your turn."})
+          setTimeout(this.addToStraightGroupFirstComputer,500)
         }
       })
     })
@@ -372,10 +381,11 @@ class PlayingField extends React.Component {
         console.log("last card number", lastCard.number)
         if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
           console.log("adding to end of straight group")
+          this.setState({computerStatement: "Added a card. Your turn."})
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
           this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
-          setTimeout(this.addToStraightGroupLastComputer, 1500)
+          setTimeout(this.addToStraightGroupLastComputer, 500)
         }
       })
     })
@@ -388,6 +398,7 @@ class PlayingField extends React.Component {
     this.setState({straightGroups: newStraightGroups.concat([commonCardGroup])})
     this.setState({computerScore: this.state.computerScore+1})
     computerdrawarray.push("found")
+    this.setState({computerStatement: "Added a card. Your turn."})
     this.removeCardFromComputerHand(computerCard)
   }
 
@@ -400,6 +411,7 @@ class PlayingField extends React.Component {
     this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
     this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
     computerdrawarray.push("found")
+    this.setState({computerStatement: "Added a card. Your turn."})
     this.setState({computerScore: this.state.computerScore+1})
     this.removeCardFromComputerHand(computerCard)
   }
@@ -436,7 +448,7 @@ class PlayingField extends React.Component {
             this.drawCardForComputer()
           } else {
             console.log('computer does not need to draw a card')
-            this.setState({computerStatement: "I submitted my groups. Your turn."})
+            this.setState({computerStatement: "I submitted my cards. Your turn."})
           }
           this.toggleDoneButton(true)
           this.toggleDrawButton(false)}
@@ -499,6 +511,8 @@ class PlayingField extends React.Component {
             this.setState({colorGroups: newColorGroup.concat([newCardGroup])})
             this.setState({computerScore: this.state.computerScore+1})
             computerdrawarray.push("found")
+            this.setState({computerStatement: "Added a card. Your turn."})
+
             this.removeCardFromComputerHand(card)
           }
 
@@ -538,58 +552,59 @@ class PlayingField extends React.Component {
 
           onCardMouseLeave = (e) => {
             if (e.target.id !== "highlight1") {
-            e.target.id = ""}
+              e.target.id = ""}
+            }
+
+            handleClickOfSort = () => {
+              //sort state of playerCards
+              let byColor = this.state.playerCards.sort((a, b) => a.color.localeCompare(b.color) || a.number - b.number)
+              this.setState({playerCards: byColor})
+            }
+
+            //stretch: break up groups
+            //if straight or color group is greater than 3
+            //if you click a group and two or more of your cards afterwards
+            // if it makes an approved group
+            // remove from card group and remove from hand
+
+
+            render() {
+              return (
+                <>
+                <img id="playRummi" src={require("../images/logo.png")}/>
+                <div class="grid-container">
+                  <ScoreBoard
+                    computerScore={this.state.computerScore}
+                    playerScore={this.state.playerScore}
+                    computerStatement={this.state.computerStatement}
+                    playerCardGroup={this.state.playerCardGroup}
+                    />
+                  <ComputerContainer
+                    computerCards={this.state.computerCards}
+                    />
+                  <CommonContainer
+                    cardGroups={this.state.cardGroups}
+                    onClickOfCard={this.handleClickOfCommonCard}
+                    highlightGroup={this.highlightGroup}
+                    />
+                  <PlayerContainer
+                    playerCards={this.state.playerCards}
+                    onClickOfCard={this.handleClickOfCard}
+                    onCardMouseEnter={this.onCardMouseEnter}
+                    onCardMouseLeave={this.onCardMouseLeave}
+                    highlight={this.highlight}
+                    />
+                  <Button
+                    onClickOfCheck={this.handleClickOfCheck}
+                    onClickOfClear={this.clearGroup}
+                    onClickOfDone={this.handleClickOfDone}
+                    onClickOfDraw={this.handleClickOfDraw}
+                    onClickOfSort={this.handleClickOfSort}
+                    />
+                </div>
+                </>
+            )
           }
-
-          handleClickOfSort = () => {
-            //sort state of playerCards
-            let byColor = this.state.playerCards.sort((a, b) => a.color.localeCompare(b.color) || a.number - b.number)
-            this.setState({playerCards: byColor})
-          }
-
-          //stretch: break up groups
-          //if straight or color group is greater than 3
-          //if you click a group and two or more of your cards afterwards
-          // if it makes an approved group
-          // remove from card group and remove from hand
-
-
-          render() {
-            return (
-              <>
-              <div class="grid-container">
-                <ScoreBoard
-                  computerScore={this.state.computerScore}
-                  playerScore={this.state.playerScore}
-                  computerStatement={this.state.computerStatement}
-                  playerCardGroup={this.state.playerCardGroup}
-                  />
-                <ComputerContainer
-                  computerCards={this.state.computerCards}
-                  />
-                <CommonContainer
-                  cardGroups={this.state.cardGroups}
-                  onClickOfCard={this.handleClickOfCommonCard}
-                  highlightGroup={this.highlightGroup}
-                  />
-                <PlayerContainer
-                  playerCards={this.state.playerCards}
-                  onClickOfCard={this.handleClickOfCard}
-                  onCardMouseEnter={this.onCardMouseEnter}
-                  onCardMouseLeave={this.onCardMouseLeave}
-                  highlight={this.highlight}
-                  />
-                <Button
-                  onClickOfCheck={this.handleClickOfCheck}
-                  onClickOfClear={this.clearGroup}
-                  onClickOfDone={this.handleClickOfDone}
-                  onClickOfDraw={this.handleClickOfDraw}
-                  onClickOfSort={this.handleClickOfSort}
-                  />
-            </div>
-              </>
-          )
         }
-      }
 
-      export default PlayingField
+        export default PlayingField
