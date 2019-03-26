@@ -89,15 +89,16 @@
 .grid-container {
   display: grid;
   grid-gap: 10px;
-  background-color: #2196F3;
+  background-color:#cbe8c9;
   padding: 10px;
 }
 
 .grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #eff8ee;
   text-align: center;
   padding: 20px;
   font-size: 30px;
+  border-radius: 5px;
 }
 
 .item6 {
@@ -141,6 +142,7 @@
   align-items: center;
   height: 35rem;
   width: 60rem;
+  overflow: auto;
 }
 
 .item4 {
@@ -174,4 +176,24 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
+}
+
+#checkButton {
+  background-color:#cbe8c9;
+
+}
+
+#clearButton {
+  background-color:#cbe8c9;
+
+}
+
+#doneButton {
+  background-color:#cbe8c9;
+
+}
+
+#drawButton {
+  background-color:#cbe8c9;
+
 }
