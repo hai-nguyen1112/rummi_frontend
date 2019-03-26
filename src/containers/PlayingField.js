@@ -531,6 +531,12 @@ class PlayingField extends React.Component {
             e.target.id = ""}
           }
 
+          handleClickOfSort = () => {
+            //sort state of playerCards
+            let byColor = this.state.playerCards.sort((a, b) => a.color.localeCompare(b.color) || a.number - b.number)
+            this.setState({playerCards: byColor})
+          }
+
           //stretch: break up groups
           //if straight or color group is greater than 3
           //if you click a group and two or more of your cards afterwards
@@ -568,6 +574,7 @@ class PlayingField extends React.Component {
                   onClickOfClear={this.clearGroup}
                   onClickOfDone={this.handleClickOfDone}
                   onClickOfDraw={this.handleClickOfDraw}
+                  onClickOfSort={this.handleClickOfSort}
                   />
             </div>
               </>

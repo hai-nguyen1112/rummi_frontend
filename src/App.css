@@ -69,7 +69,7 @@
   justify-content:center;
   padding: 10%;
   border-radius: 25px;
-  background-color: lightblue;
+  background-color: #cbe8c9;
   align-items: center;
 }
 
@@ -202,5 +202,12 @@
 
 #drawButton {
   background-color:#cbe8c9;
+}
 
+#quitButton {
+  background-color:#cbe8c9;
+}
+
+#sortButton {
+  background-color:#cbe8c9;
 }
