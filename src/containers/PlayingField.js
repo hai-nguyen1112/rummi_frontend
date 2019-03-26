@@ -4,8 +4,11 @@ import PlayerContainer from '../components/PlayerContainer'
 import CommonContainer from '../components/CommonContainer'
 import Button from  '../components/Button'
 import ScoreBoard from  '../components/ScoreBoard'
+import Speech from 'speak-tts'
 var _ = require('underscore')
 let computerdrawarray = []
+
+const speech = new Speech()
 
 class PlayingField extends React.Component {
   constructor() {
@@ -109,6 +112,7 @@ class PlayingField extends React.Component {
     })
     this.toggleDoneButton(true)
     this.addShakeClass()
+    setTimeout(this.rummiSpeak("Hi, I'm Rummi. Let's play a game. You start."),500)
   }
 
   handleClickOfCard = card => {
@@ -180,10 +184,19 @@ class PlayingField extends React.Component {
     setTimeout(()=>document.querySelector('.avatar').classList.remove('shake'),1000)
   }
 
-
+  rummiSpeak = (rummi) => {
+    speech.speak({
+    text: rummi,
+    }).then(() => {
+        console.log("Success !")
+    }).catch(e => {
+        console.error("An error occurred :", e)
+    })
+  }
   handleClickOfDone = () => {
     if (!this.checkScore()) {
       this.setState({computerStatement: "My turn."})
+      this.rummiSpeak("My turn.")
       setTimeout(this.computerTurn,500)
       this.addShakeClass()
     } else {
@@ -199,6 +212,7 @@ class PlayingField extends React.Component {
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({playerCards: [...this.state.playerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
     this.setState({computerStatement: "My turn."})
+    this.rummiSpeak("My turn.")
     setTimeout(this.computerTurn,500)
     this.addShakeClass()
   }
@@ -208,6 +222,7 @@ class PlayingField extends React.Component {
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({computerCards: [...this.state.computerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
     this.setState({computerStatement: "I drew a card. Your turn."})
+    this.rummiSpeak("I drew a card. Your turn.")
     this.addShakeClass()
   }
 
@@ -241,7 +256,6 @@ class PlayingField extends React.Component {
             this.removeGroupFromComputerHand(finalArray)
             this.addColorGroup(finalArray)
             this.setState({computerScore: this.state.computerScore+finalArray.length})
-            this.setState({computerStatement: "I found a group."})
             this.addShakeClass()
             console.log("found a group!!!!!!! 1")
             computerdrawarray.push("found")
@@ -299,7 +313,6 @@ class PlayingField extends React.Component {
             this.removeGroupFromComputerHand(straight)
             this.addStraightGroup(straight)
             this.setState({computerScore: this.state.computerScore+straight.length})
-            this.setState({computerStatement: "I found a group."})
             this.addShakeClass()
             console.log("found a group!!!!!!! 2")
             computerdrawarray.push("found")
@@ -314,7 +327,7 @@ class PlayingField extends React.Component {
     allNumberGroups.forEach(group=>{
       if (group.length < 4) {
         let colors = group.map(card=>card.color)
-        allComputerCards.forEach(card=>{
+        this.uniqueByColorAndNumber(allComputerCards).forEach(card=>{
           if (card.number === group[0].number) {
             if (!colors.includes(card.color)) {
               this.updateNumberGroupComputer(group, card)
@@ -360,7 +373,8 @@ class PlayingField extends React.Component {
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
           this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
-          this.setState({computerStatement: "Added a card. Your turn."})
+          this.setState({computerStatement: "I added a card. Your turn."})
+
           this.addShakeClass()
           setTimeout(this.addToStraightGroupFirstComputer,500)
         }
@@ -372,9 +386,11 @@ class PlayingField extends React.Component {
     if (this.state.playerScore >= 30) {
       this.setState({computerStatement: "You won!"})
       this.addShakeClass()
+      this.rummiSpeak("You won! That's no fun.")
       return true
     } else if (this.state.computerScore >= 30) {
       this.setState({computerStatement: "I won! HAHA"})
+      this.rummiSpeak( "I won! MWAHAHAHA")
       this.addShakeClass()
       return true
     } else {return false}
@@ -396,7 +412,7 @@ class PlayingField extends React.Component {
         console.log("last card number", lastCard.number)
         if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
           console.log("adding to end of straight group")
-          this.setState({computerStatement: "Added a card. Your turn."})
+          this.setState({computerStatement: "I added a card. Your turn."})
           this.addShakeClass()
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
           this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
@@ -414,8 +430,9 @@ class PlayingField extends React.Component {
     this.setState({straightGroups: newStraightGroups.concat([commonCardGroup])})
     this.setState({computerScore: this.state.computerScore+1})
     computerdrawarray.push("found")
-    this.setState({computerStatement: "Added a card. Your turn."})
+    this.setState({computerStatement: "I added a card. Your turn."})
     this.addShakeClass()
+
     this.removeCardFromComputerHand(computerCard)
   }
 
@@ -428,7 +445,8 @@ class PlayingField extends React.Component {
     this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
     this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
     computerdrawarray.push("found")
-    this.setState({computerStatement: "Added a card. Your turn."})
+    this.setState({computerStatement: "I added a card. Your turn."})
+
     this.addShakeClass()
     this.setState({computerScore: this.state.computerScore+1})
     this.removeCardFromComputerHand(computerCard)
@@ -468,6 +486,7 @@ class PlayingField extends React.Component {
             console.log('computer does not need to draw a card')
             this.setState({computerStatement: "I submitted my cards. Your turn."})
             this.addShakeClass()
+            this.rummiSpeak("I submitted my cards. Your turn.")
           }
           this.toggleDoneButton(true)
           this.toggleDrawButton(false)}
@@ -539,7 +558,7 @@ class PlayingField extends React.Component {
             this.setState({colorGroups: newColorGroup.concat([newCardGroup])})
             this.setState({computerScore: this.state.computerScore+1})
             computerdrawarray.push("found")
-            this.setState({computerStatement: "Added a card. Your turn."})
+            this.setState({computerStatement: "I added a card. Your turn."})
             this.addShakeClass()
             this.removeCardFromComputerHand(card)
           }
