@@ -439,7 +439,7 @@ class PlayingField extends React.Component {
 
         handleClickOfCommonCard = (card) =>{
           console.log("yooooooooo")
-          // figure out how to do this function with drag and drop 
+          // figure out how to do this function with drag and drop
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
           if (this.state.playerCardGroup[0]){
             let selectedCard = this.state.playerCardGroup[0]
