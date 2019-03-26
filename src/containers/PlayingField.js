@@ -21,7 +21,8 @@ class PlayingField extends React.Component {
       colorGroups: [],
       playerScore: 0,
       computerScore: 0,
-      computerStatement: "Hi, I'm Rummi. Let's play a game. You start."
+      computerStatement: "Hi, I'm Rummi. Let's play a game. You start.",
+      draggedCard: {}
     }
   }
 
@@ -458,12 +459,19 @@ class PlayingField extends React.Component {
           console.log(e.target)
         }
 
-        handleClickOfCommonCard = (card) =>{
-          console.log("yooooooooo")
+        knowCard = (card) => {
+          console.log("I KNOW THE CARD", card)
+          this.setState({draggedCard: card})
+        }
+        handleClickOfCommonCard = (group) =>{
+          console.log("I KNOW THE GROUP", group)
+          console.log("I STILL KNOW THE CARD", this.state.draggedCard)
+          let card = this.state.draggedCard
           // figure out how to do this function with drag and drop
-          let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(card))[0]
-          if (this.state.playerCardGroup[0]){
-            let selectedCard = this.state.playerCardGroup[0]
+          let commonCardGroup = group
+
+          if (this.state.draggedCard){
+            let selectedCard = card
             if (commonCardGroup[0].color === commonCardGroup[1].color && commonCardGroup[0].color === selectedCard.color) {
               if (selectedCard.number === commonCardGroup[commonCardGroup.length - 1].number +1) {
                 this.updateStraightCardGroupLast(commonCardGroup, selectedCard)
@@ -486,6 +494,8 @@ class PlayingField extends React.Component {
                 }
               }
             }}
+            this.setState({draggedCard:{}})
+
           }
 
           updateColorCardGroup = (cardGroup, card) => {
@@ -584,7 +594,7 @@ class PlayingField extends React.Component {
                     />
                   <CommonContainer
                     cardGroups={this.state.cardGroups}
-                    onClickOfCard={this.handleClickOfCommonCard}
+                    onDropOfGroup={this.handleClickOfCommonCard}
                     highlightGroup={this.highlightGroup}
                     />
                   <PlayerContainer
@@ -593,6 +603,7 @@ class PlayingField extends React.Component {
                     onCardMouseEnter={this.onCardMouseEnter}
                     onCardMouseLeave={this.onCardMouseLeave}
                     highlight={this.highlight}
+                    knowCard={this.knowCard}
                     />
                   <Button
                     onClickOfCheck={this.handleClickOfCheck}
