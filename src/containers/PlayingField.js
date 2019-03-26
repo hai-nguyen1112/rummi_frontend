@@ -175,6 +175,7 @@ class PlayingField extends React.Component {
 
   handleClickOfDone = () => {
     if (!this.checkScore()) {
+      this.setState({computerStatement: "My turn."})
       setTimeout(this.computerTurn,1000)
     } else {
       this.toggleDoneButton(true)
@@ -187,6 +188,7 @@ class PlayingField extends React.Component {
     let remainingCards = this.state.remainingCards
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({playerCards: [...this.state.playerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
+    this.setState({computerStatement: "My turn."})
     setTimeout(this.computerTurn,1000)
   }
 
@@ -338,7 +340,7 @@ class PlayingField extends React.Component {
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(firstCard))[0]
           this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
-          this.addToStraightGroupFirstComputer()
+          setTimeout(this.addToStraightGroupFirstComputer,1500)
         }
       })
     })
@@ -364,11 +366,16 @@ class PlayingField extends React.Component {
     lastStraightCards.forEach(lastCard => {
       computerCards.forEach(computerCard => {
         console.log("last card", lastCard)
+        console.log("computer card color", computerCard.color)
+        console.log("last card color", lastCard.color)
+        console.log("computer card number", computerCard.number)
+        console.log("last card number", lastCard.number)
         if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
+          console.log("adding to end of straight group")
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
           this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
-          this.addToStraightGroupLastComputer()
+          setTimeout(this.addToStraightGroupLastComputer, 1500)
         }
       })
     })
@@ -380,6 +387,7 @@ class PlayingField extends React.Component {
     this.setState({cardGroups: newCommonCardGroups})
     this.setState({straightGroups: newStraightGroups.concat([commonCardGroup])})
     this.setState({computerScore: this.state.computerScore+1})
+    computerdrawarray.push("found")
     this.removeCardFromComputerHand(computerCard)
   }
 
@@ -391,6 +399,7 @@ class PlayingField extends React.Component {
     let newStraightGroup = this.state.straightGroups.filter(group=> group !== commonCardGroup)
     this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
     this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
+    computerdrawarray.push("found")
     this.setState({computerScore: this.state.computerScore+1})
     this.removeCardFromComputerHand(computerCard)
   }
@@ -489,6 +498,7 @@ class PlayingField extends React.Component {
             this.setState({cardGroups: newCommonCardGroups.concat([newCardGroup])})
             this.setState({colorGroups: newColorGroup.concat([newCardGroup])})
             this.setState({computerScore: this.state.computerScore+1})
+            computerdrawarray.push("found")
             this.removeCardFromComputerHand(card)
           }
 

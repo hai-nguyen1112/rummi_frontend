@@ -11,11 +11,11 @@ const ScoreBoard = props => {
   return(
     <>
     <div className="grid-item item6">
-    <div className="ui piled segment">
-      <p>
-        {props.computerStatement}
-      </p>
-    </div>
+      <div className="state">  <img className="ui right spaced avatar image" src={require('../images/rummi.png')}/>
+    <div id="rummisays" className="ui label big">
+        <div className="detail">{props.computerStatement}</div>
+      </div>
+       </div>
     </div>
     <div className="grid-item item7">
       <p>

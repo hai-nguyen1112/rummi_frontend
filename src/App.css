@@ -57,20 +57,22 @@
   margin-left:5px;
 }
 
-.home {
+.root {
   margin:100px;
   display: flex;
   justify-content: center;
-  align-items: center !important;
+  align-items: center;
+  background-color: #cbe8c9;
+
 }
 
 #hey {
   display: flex;
   justify-content:center;
   padding: 10%;
-  border-radius: 25px;
-  background-color: #cbe8c9;
   align-items: center;
+  background-color: #cbe8c9;
+
 }
 
 #scoreheader {
@@ -186,28 +188,94 @@
 }
 
 #checkButton {
-  background-color:#cbe8c9;
-
+  background-color:#E41414;
+  color: white;
+  border-radius: 8px;
 }
 
 #clearButton {
-  background-color:#cbe8c9;
+  background-color:#000000;
+  color: white;
+  border-radius: 6px;
 
 }
 
 #doneButton {
-  background-color:#cbe8c9;
-
+  background-color:#0000FF;
+  color: white;
+  border-radius: 6px;
 }
 
 #drawButton {
-  background-color:#cbe8c9;
+  background-color:#FF8C00;
+  color: white;
+  border-radius: 6px;
 }
 
 #quitButton {
-  background-color:#cbe8c9;
+  background-color:#E41414;
+  color: white;
+  border-radius: 6px;
 }
 
 #sortButton {
-  background-color:#cbe8c9;
+  background-color:#FF8C00;
+  color: white;
+  border-radius: 6px;
 }
+
+.somethin {
+  width: 80%;
+}
+
+div .content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 642px;
+}
+
+.rulesImage {
+width: 70%;
+}
+
+.logoImage {
+width: 70%;
+}
+
+#playButton {
+background-color: #E41414;
+color: white;
+border-radius: 8px;
+}
+
+#instructionsButton {
+background-color: #000000;
+color: white;
+border-radius: 8px;
+}
+
+
+#homeButton {
+background-color: #FF8C00;
+color: white;
+border-radius: 8px;
+}
+
+#rummisays {
+  background-color: #cbe8c9;
+  color: black;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+}
+
+ body {
+   background-color: #cbe8c9;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  }

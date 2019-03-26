@@ -6,18 +6,16 @@ const Home = () => {
     <body className="home container">
     <div className="ui inverted vertical masthead center aligned segment" id="hey">
     <div className="ui text container">
-    <h1 className="ui inverted header">
-    RUMMI HOME PAGE
-    </h1>
+    <img className="logoImage" src={require("../images/logo.png")} />
     <div className="ui huge buttons">
     <Link to={`/instructions`}>
-    <div className="ui button">
+    <div className="ui button" id="instructionsButton">
     Instructions
     </div>
     </Link>
     <div className="or"></div>
     <Link to={`/game`}>
-    <div className="ui button">
+    <div className="ui button" id="playButton">
     Play Game
     </div>
     </Link>
