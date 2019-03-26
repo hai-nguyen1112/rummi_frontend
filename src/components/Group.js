@@ -5,7 +5,7 @@ class Group extends React.Component {
   render() {
     let commonCards = this.props.group.map(card => <Card highlight={this.props.highlight} onCardMouseEnter={()=>{}} onCardMouseLeave={()=>{}} onClickOfCard={this.props.onClickOfCard} key={card.id} card={card}/>)
     return (
-      <div className="row centered">
+      <div className="row" id="group">
         {commonCards}
       </div>
     )
