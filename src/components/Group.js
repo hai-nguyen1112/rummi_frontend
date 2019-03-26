@@ -5,6 +5,7 @@ class Group extends React.Component {
   render() {
     let commonCards = this.props.group.map(card => <Card highlight={this.props.highlight} onCardMouseEnter={()=>{}} onCardMouseLeave={()=>{}} onClickOfCard={()=>{}} key={card.id} card={card}/>)
     return (
+
       <div className="row" id="group" onDragOver={(e)=>{e.preventDefault()}} onDrop={(e)=>{e.preventDefault(); this.props.onDropOfGroup(this.props.group)}} >
         {commonCards}
       </div>

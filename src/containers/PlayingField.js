@@ -108,6 +108,7 @@ class PlayingField extends React.Component {
       this.setState({computerCards: computerCards, playerCards: playerCards, remainingCards: cards})
     })
     this.toggleDoneButton(true)
+    this.addShakeClass()
   }
 
   handleClickOfCard = card => {
@@ -174,10 +175,17 @@ class PlayingField extends React.Component {
     }
   }
 
+  addShakeClass = () => {
+    document.querySelector('.avatar').classList.add('shake')
+    setTimeout(()=>document.querySelector('.avatar').classList.remove('shake'),1000)
+  }
+
+
   handleClickOfDone = () => {
     if (!this.checkScore()) {
       this.setState({computerStatement: "My turn."})
       setTimeout(this.computerTurn,500)
+      this.addShakeClass()
     } else {
       this.toggleDoneButton(true)
       this.toggleDrawButton(true)
@@ -192,6 +200,7 @@ class PlayingField extends React.Component {
     this.setState({playerCards: [...this.state.playerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
     this.setState({computerStatement: "My turn."})
     setTimeout(this.computerTurn,500)
+    this.addShakeClass()
   }
 
   drawCardForComputer = () => {
@@ -199,7 +208,7 @@ class PlayingField extends React.Component {
     let randomCard = remainingCards[Math.floor(Math.random() * remainingCards.length)]
     this.setState({computerCards: [...this.state.computerCards, randomCard], remainingCards: remainingCards.filter(card => {return card.id !== randomCard.id})})
     this.setState({computerStatement: "I drew a card. Your turn."})
-
+    this.addShakeClass()
   }
 
   toggleDoneButton = (input) => {
@@ -233,6 +242,7 @@ class PlayingField extends React.Component {
             this.addColorGroup(finalArray)
             this.setState({computerScore: this.state.computerScore+finalArray.length})
             this.setState({computerStatement: "I found a group."})
+            this.addShakeClass()
             console.log("found a group!!!!!!! 1")
             computerdrawarray.push("found")
           } else {
@@ -290,6 +300,7 @@ class PlayingField extends React.Component {
             this.addStraightGroup(straight)
             this.setState({computerScore: this.state.computerScore+straight.length})
             this.setState({computerStatement: "I found a group."})
+            this.addShakeClass()
             console.log("found a group!!!!!!! 2")
             computerdrawarray.push("found")
           }
@@ -350,6 +361,7 @@ class PlayingField extends React.Component {
           this.updateStraightCardGroupFirstComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
           this.setState({computerStatement: "Added a card. Your turn."})
+          this.addShakeClass()
           setTimeout(this.addToStraightGroupFirstComputer,500)
         }
       })
@@ -359,9 +371,11 @@ class PlayingField extends React.Component {
   checkScore = () => {
     if (this.state.playerScore >= 30) {
       this.setState({computerStatement: "You won!"})
+      this.addShakeClass()
       return true
     } else if (this.state.computerScore >= 30) {
       this.setState({computerStatement: "I won! HAHA"})
+      this.addShakeClass()
       return true
     } else {return false}
   }
@@ -383,6 +397,7 @@ class PlayingField extends React.Component {
         if (computerCard.color === lastCard.color && computerCard.number === lastCard.number + 1) {
           console.log("adding to end of straight group")
           this.setState({computerStatement: "Added a card. Your turn."})
+          this.addShakeClass()
           let commonCardGroup = this.state.cardGroups.filter(cardGroup=>cardGroup.includes(lastCard))[0]
           this.updateStraightCardGroupLastComputer(commonCardGroup, computerCard)
           computerdrawarray.push("found")
@@ -400,6 +415,7 @@ class PlayingField extends React.Component {
     this.setState({computerScore: this.state.computerScore+1})
     computerdrawarray.push("found")
     this.setState({computerStatement: "Added a card. Your turn."})
+    this.addShakeClass()
     this.removeCardFromComputerHand(computerCard)
   }
 
@@ -413,6 +429,7 @@ class PlayingField extends React.Component {
     this.setState({straightGroups: newStraightGroup.concat([newCardGroup])})
     computerdrawarray.push("found")
     this.setState({computerStatement: "Added a card. Your turn."})
+    this.addShakeClass()
     this.setState({computerScore: this.state.computerScore+1})
     this.removeCardFromComputerHand(computerCard)
   }
@@ -450,6 +467,7 @@ class PlayingField extends React.Component {
           } else {
             console.log('computer does not need to draw a card')
             this.setState({computerStatement: "I submitted my cards. Your turn."})
+            this.addShakeClass()
           }
           this.toggleDoneButton(true)
           this.toggleDrawButton(false)}
@@ -522,7 +540,7 @@ class PlayingField extends React.Component {
             this.setState({computerScore: this.state.computerScore+1})
             computerdrawarray.push("found")
             this.setState({computerStatement: "Added a card. Your turn."})
-
+            this.addShakeClass()
             this.removeCardFromComputerHand(card)
           }
 
