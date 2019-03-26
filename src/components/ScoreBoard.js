@@ -32,9 +32,11 @@ const ScoreBoard = props => {
   </div>
 
       <div className="grid-item item6">
+      <div className="ui piled segment">
         <p>
           {props.computerStatement}
         </p>
+      </div>
       </div>
 
     </>
