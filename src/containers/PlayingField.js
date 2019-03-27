@@ -386,13 +386,14 @@ class PlayingField extends React.Component {
 
   checkScore = () => {
     if (this.state.playerScore >= 30) {
+
       this.setState({computerStatement: "You won! That's no fun."})
       this.addShakeClass()
       this.rummiSpeak("You won! That's no fun.")
       return true
     } else if (this.state.computerScore >= 30) {
-      this.setState({computerStatement: "I won! MWAHAHAHA"})
-      this.rummiSpeak( "I won! MWAHAHAHA")
+      this.setState({computerStatement: "I won! You loser"})
+      this.rummiSpeak( "I won! You loser")
       this.addShakeClass()
       return true
     } else {return false}
@@ -621,7 +622,7 @@ class PlayingField extends React.Component {
             //if common card group >3
             // if common card and your cards make valid group
             // remove from commoncard from common card group and remove your cards from hand
-            // and create new common group 
+            // and create new common group
 
             render() {
               return (
