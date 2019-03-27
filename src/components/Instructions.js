@@ -35,7 +35,7 @@ const Instructions = () => {
     <div class="content">
     <div class="title">Add a Card to a Group</div>
     <div class="description">1. You can add individual cards to groups if they satisfy the requirements.</div>
-    <div class="description">2. First, select a card. Then, select a Group.</div>
+    <div class="description">2. Drag and drop a card over a group to add the card to the beginning or end of the group.</div>
     </div>
     </div>
     <div class="completed step">
@@ -43,7 +43,7 @@ const Instructions = () => {
     <div class="content">
     <div class="title">Point System</div>
     <div class="description">You get 1 point for each card you put down.</div>
-    <div class="description">First one to get to 30 points wins.</div>
+    <div class="description">First one to get 30 points wins.</div>
     </div>
     </div>
     </div>

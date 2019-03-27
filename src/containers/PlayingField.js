@@ -616,6 +616,12 @@ class PlayingField extends React.Component {
             // if it makes an approved group
             // remove from card group and remove from hand
 
+            //stretch: break up groups
+            //if click end of commoncard
+            //if common card group >3
+            // if common card and your cards make valid group
+            // remove from commoncard from common card group and remove your cards from hand
+            // and create new common group 
 
             render() {
               return (
