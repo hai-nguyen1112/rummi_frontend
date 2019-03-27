@@ -194,7 +194,8 @@ class PlayingField extends React.Component {
     })
   }
   handleClickOfDone = () => {
-    if (!this.checkScore()) {
+    let checkScore = this.checkScore()
+    if (checkScore === false) {
       this.setState({computerStatement: "My turn."})
       this.rummiSpeak("My turn.")
       setTimeout(this.computerTurn,500)
@@ -344,7 +345,8 @@ class PlayingField extends React.Component {
   }
 
   shouldComputerDraw = () => {
-    if (!this.checkScore()) {
+    let checkScore = this.checkScore()
+    if (checkScore === false) {
       this.computerDrawCard()} else {
         this.toggleDoneButton(true)
         this.toggleDrawButton(true)
@@ -384,12 +386,12 @@ class PlayingField extends React.Component {
 
   checkScore = () => {
     if (this.state.playerScore >= 30) {
-      this.setState({computerStatement: "You won!"})
+      this.setState({computerStatement: "You won! That's no fun."})
       this.addShakeClass()
       this.rummiSpeak("You won! That's no fun.")
       return true
     } else if (this.state.computerScore >= 30) {
-      this.setState({computerStatement: "I won! HAHA"})
+      this.setState({computerStatement: "I won! MWAHAHAHA"})
       this.rummiSpeak( "I won! MWAHAHAHA")
       this.addShakeClass()
       return true
