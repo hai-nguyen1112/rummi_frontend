@@ -102,7 +102,7 @@ class PlayingField extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/api/v1/cards')
+    fetch('https://rummi-backend.herokuapp.com/api/v1/cards')
     .then(res => res.json())
     .then(allCards => {
       let cards = allCards
