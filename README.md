@@ -12,4 +12,4 @@
 
 * Note: please read the game instructions when opening the app before playing.
 
-* Link to rummi backend repo: ![rummi backend](https://github.com/hai-nguyen1112/rummi)
+* Link to rummi backend repo: [Rummi Backend](https://github.com/hai-nguyen1112/rummi)
